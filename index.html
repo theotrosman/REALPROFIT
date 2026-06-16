@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profit · prototipo</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:28px;line-height:1.5}
+  h1{font-size:22px;margin-bottom:4px}
+  .sub{color:#94a3b8;font-size:13px;margin-bottom:22px}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:#1e293b;border-radius:10px;overflow:hidden}
+  th,td{padding:11px 13px;text-align:right;border-bottom:1px solid #334155}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:#172033;color:#94a3b8;font-weight:600;font-size:11px}
+  tbody tr:last-child td{border-bottom:none}
+  .neg{color:#f87171}
+  .pos{color:#34d399}
+  .num{font-variant-numeric:tabular-nums}
+  .note{color:#64748b;font-size:11px;margin-top:14px}
+</style>
+</head>
+<body>
+  <h1>Motor de rentabilidad — prototipo</h1>
+  <div class="sub">Cuánto queda de verdad en cada venta, descontando comisión de ML, envío e impuestos.</div>
+  <table>
+    <thead>
+      <tr><th>Producto</th><th>Precio</th><th>Comisión</th><th>Envío</th><th>Impuestos</th><th>Costo</th><th>Te queda</th></tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p class="note">Te queda = Precio − Comisión ML − Envío − Impuestos − Costo. Datos de ejemplo.</p>
+
+<script>
+const PRODUCTOS = [
+  {nombre:'Auriculares Bluetooth XT', precio:48900, costo:19000, comisionPct:14.5, envio:3200, iibb:3.5},
+  {nombre:'Termo acero 1L premium',   precio:32500, costo:15000, comisionPct:16.2, envio:2800, iibb:4.0},
+  {nombre:'Zapatillas running Z4',    precio:89900, costo:40000, comisionPct:15.5, envio:0,    iibb:4.0},
+  {nombre:'Cafetera express compacta',precio:128000,costo:58000, comisionPct:13.5, envio:0,    iibb:3.0},
+  {nombre:'Mochila urbana antirrobo', precio:41200, costo:23500, comisionPct:14.0, envio:2900, iibb:3.5},
+  {nombre:'Set sábanas algodón',      precio:54000, costo:39000, comisionPct:14.0, envio:0,    iibb:4.0},
+];
+const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+
+function calc(p){
+  const comision = p.precio * p.comisionPct/100;
+  const impuestos = p.precio * (p.iibb + 5)/100;
+  const queda = p.precio - comision - p.envio - impuestos - p.costo;
+  return {comision, impuestos, queda};
+}
+
+const tb = document.getElementById('tbody');
+PRODUCTOS.forEach(p => {
+  const c = calc(p);
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${p.nombre}</td>
+    <td class="num">${fmt(p.precio)}</td>
+    <td class="num">−${fmt(c.comision)}</td>
+    <td class="num">${p.envio ? '−'+fmt(p.envio) : '$0'}</td>
+    <td class="num">−${fmt(c.impuestos)}</td>
+    <td class="num">−${fmt(p.costo)}</td>
+    <td class="num ${c.queda<0?'neg':'pos'}"><b>${fmt(c.queda)}</b></td>`;
+  tb.appendChild(tr);
+});
+</script>
+</body>
+</html>
