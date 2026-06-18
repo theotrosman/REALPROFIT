@@ -3,66 +3,657 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profit · prototipo</title>
+<title>Real Trends · Profit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --bg:#f4f6f8; --panel:#ffffff; --ink:#1f2733; --ink2:#3b4654; --muted:#7a8595; --line:#e7ebf0;
+    --blue:#0065f3; --blue-dk:#0559cf; --blue-soft:#e8f1ff;
+    --teal:#2bb89a; --teal-dk:#1d9c81; --teal-soft:#e6f7f2;
+    --amber:#e0a100; --amber-soft:#fdf4dc;
+    --red:#ef4d54; --red-soft:#fdeaeb;
+    --shadow:0 1px 3px rgba(20,40,80,.06),0 6px 18px rgba(20,40,80,.05);
+    --ease-out:cubic-bezier(.23,1,.32,1); --ease-io:cubic-bezier(.32,.72,0,1);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;padding:28px;line-height:1.5}
-  h1{font-size:22px;margin-bottom:4px}
-  .sub{color:#94a3b8;font-size:13px;margin-bottom:22px}
-  table{width:100%;border-collapse:collapse;font-size:13px;background:#1e293b;border-radius:10px;overflow:hidden}
-  th,td{padding:11px 13px;text-align:right;border-bottom:1px solid #334155}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:36px}
+  h1,h2,h3{letter-spacing:-.02em}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* Topbar */
+  .topbar{background:var(--panel);border-bottom:1px solid var(--line);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
+  .tb-left{display:flex;align-items:center;gap:14px}
+  .tb-left img{height:26px;display:block}
+  .divider{width:1px;height:26px;background:var(--line)}
+  .module{display:flex;align-items:center;gap:9px}
+  .module .name{font-weight:800;font-size:17px;color:var(--ink)}
+  .module .tag{background:var(--teal-soft);color:var(--teal-dk);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+  .conn{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(43,184,154,.5);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(43,184,154,.5)}70%{box-shadow:0 0 0 6px rgba(43,184,154,0)}100%{box-shadow:0 0 0 0 rgba(43,184,154,0)}}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:18px 28px}
+
+  /* Page header (módulo embebido) */
+  .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .crumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:6px}
+  .crumb b{color:var(--ink2);font-weight:600}
+  .crumb .sep{opacity:.6}
+  .phead h1{font-size:22px;font-weight:800}
+  .phead .sub{font-size:13px;color:var(--muted);margin-top:3px;max-width:560px}
+  .phead-actions{display:flex;gap:9px;align-items:center}
+
+  /* Market strip */
+  .market{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  @media(max-width:860px){.market{grid-template-columns:repeat(2,1fr)}}
+  .mcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:11px;box-shadow:var(--shadow)}
+  .mcard .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
+  .mcard .ic.b{background:var(--blue-soft)} .mcard .ic.t{background:var(--teal-soft)} .mcard .ic.a{background:var(--amber-soft)}
+  .mcard .l{font-size:11px;color:var(--muted)}
+  .mcard .v{font-size:16.5px;font-weight:800;margin-top:0}
+  .mcard .src{font-size:10px;color:var(--muted)}
+
+  /* KPIs */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+  @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow)}
+  .kpi .label{color:var(--muted);font-size:11.5px;font-weight:500}
+  .kpi .val{font-size:23px;font-weight:800;margin-top:3px;letter-spacing:-.03em}
+  .kpi .val.red{color:var(--red)} .kpi .val.teal{color:var(--teal-dk)} .kpi .val.amber{color:var(--amber)} .kpi .val.blue{color:var(--blue)}
+  .kpi .hint{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.35}
+
+  /* Controls */
+  .controls{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-bottom:16px}
+  @media(max-width:980px){.controls{grid-template-columns:1fr}.panel-grid{grid-template-columns:1fr!important}.hero h2{font-size:22px}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:var(--shadow)}
+  .card h3{font-size:13.5px;font-weight:700;margin-bottom:3px}
+  .card .desc{font-size:11.5px;color:var(--muted);margin-bottom:11px}
+  .modes{display:flex;gap:8px}
+  .mode{flex:1;text-align:center;padding:10px 6px;border:1.5px solid var(--line);border-radius:11px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);transition:border-color .15s var(--ease-out),background .15s var(--ease-out),transform .12s var(--ease-out);background:#fff}
+  .mode small{display:block;color:var(--muted);font-weight:400;font-size:10.5px;margin-top:3px}
+  .mode:hover{border-color:#c7d0dc}
+  .mode:active{transform:scale(.98)}
+  .mode.active{border-color:var(--blue);background:var(--blue-soft);color:var(--blue-dk)}
+  .mode.active small{color:var(--blue-dk)}
+  .infl-row{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
+  .field{display:flex;flex-direction:column;gap:5px}
+  .field label{font-size:11.5px;color:var(--muted);font-weight:500}
+  .field input,.field select{background:#fff;border:1.5px solid var(--line);color:var(--ink);border-radius:9px;padding:9px 11px;font-size:13.5px;font-family:inherit;font-weight:600}
+  .field input{width:88px}
+  .field input:focus,.field select:focus{outline:none;border-color:var(--blue)}
+  button{font-family:inherit;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:background .15s var(--ease-out),transform .12s var(--ease-out);box-shadow:0 2px 6px rgba(0,101,243,.25)}
+  button:hover{background:var(--blue-dk)}
+  button:active{transform:scale(.97)}
+  button.teal{background:var(--teal);box-shadow:0 2px 6px rgba(43,184,154,.25)} button.teal:hover{background:var(--teal-dk)}
+  button.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink2);box-shadow:none} button.ghost:hover{background:var(--bg)}
+  button.sm{padding:8px 13px;font-size:12.5px}
+  .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+
+  .panel-grid{display:grid;grid-template-columns:1fr 330px;gap:16px;align-items:start}
+  .panel-grid>div{min-width:0}
+  .sec-h{font-size:15px;font-weight:700;margin:2px 0 10px;display:flex;align-items:center;gap:9px}
+  .sec-h small{color:var(--muted);font-weight:400;font-size:12px}
+
+  /* Toolbar tabla */
+  .tbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{padding:6px 12px;border:1.5px solid var(--line);border-radius:20px;background:#fff;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer;transition:border-color .15s var(--ease-out),background .15s var(--ease-out),color .15s var(--ease-out),transform .12s var(--ease-out)}
+  .chip:hover{border-color:#c7d0dc}
+  .chip:active{transform:scale(.96)}
+  .chip.active{border-color:var(--blue);background:var(--blue-soft);color:var(--blue-dk)}
+  .chip .ct{display:inline-block;min-width:16px;text-align:center;margin-left:5px;font-size:10.5px;background:rgba(0,0,0,.06);border-radius:9px;padding:0 5px}
+  .search{margin-left:auto;position:relative}
+  .search input{border:1.5px solid var(--line);border-radius:9px;padding:8px 12px 8px 30px;font-size:12.5px;font-family:inherit;width:190px;transition:border-color .15s var(--ease-out)}
+  .search input:focus{outline:none;border-color:var(--blue)}
+  .search::before{content:'🔎';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6}
+
+  /* Chart */
+  .chartcard{margin-bottom:18px}
+  .chartcard h3{font-size:14px;font-weight:700}
+  .chartcard .leg{display:flex;gap:18px;font-size:12px;color:var(--ink2);margin:6px 0 8px}
+  .chartcard .leg span{display:flex;align-items:center;gap:7px}
+  .ldot{width:13px;height:3.5px;border-radius:2px;display:inline-block}
+
+  /* Table */
+  .tablecard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .tscroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{padding:9px 12px;text-align:right;white-space:nowrap}
   th:first-child,td:first-child{text-align:left}
-  thead th{background:#172033;color:#94a3b8;font-weight:600;font-size:11px}
-  tbody tr:last-child td{border-bottom:none}
-  .neg{color:#f87171}
-  .pos{color:#34d399}
+  thead th{background:#fbfcfd;color:var(--muted);font-weight:600;font-size:11px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
+  thead th.sortable{cursor:pointer;user-select:none}
+  thead th.sortable:hover{color:var(--ink2)}
+  thead th.sortable.sorted::after{content:' ▾';color:var(--blue)}
+  thead th.sortable.asc::after{content:' ▴';color:var(--blue)}
+  tbody tr{border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s var(--ease-out)}
+  tbody tr:hover{background:#f8fafc}
+  tbody tr:last-child{border-bottom:none}
+  tr.flash{animation:rowflash 1.2s ease}
+  @keyframes rowflash{0%{background:var(--blue-soft)}100%{background:#fff}}
+  .prod b{font-weight:700;font-size:13px}
+  .prod small{color:var(--muted);font-size:11px;display:block;margin-top:1px}
+  .tags{margin-top:5px}
+  .badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted);margin-right:4px}
+  .badge.low{color:var(--red);border-color:#f6c4c6;background:var(--red-soft)}
+  .badge.usd{color:var(--blue);border-color:#bcd9ff;background:var(--blue-soft)}
   .num{font-variant-numeric:tabular-nums}
-  .note{color:#64748b;font-size:11px;margin-top:14px}
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+  .pill::before{content:'';width:7px;height:7px;border-radius:50%}
+  .pill.teal{background:var(--teal-soft);color:var(--teal-dk)} .pill.teal::before{background:var(--teal)}
+  .pill.amber{background:var(--amber-soft);color:#9a7000} .pill.amber::before{background:var(--amber)}
+  .pill.red{background:var(--red-soft);color:#c0353b} .pill.red::before{background:var(--red)}
+  .act{font-size:12px;font-weight:700}
+  .act small{display:block;color:var(--muted);font-weight:400;font-size:10.5px;white-space:normal;max-width:160px}
+  .act.teal{color:var(--teal-dk)} .act.amber{color:#9a7000} .act.red{color:var(--red)} .act.blue{color:var(--blue)}
+  .mneg{color:var(--red)} .mpos{color:var(--ink)}
+  .footnote{color:var(--muted);font-size:11px;margin-top:14px;line-height:1.6}
+
+  /* Feed */
+  .feedcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:var(--shadow);position:sticky;top:78px}
+  .feedcard h3{font-size:13.5px;font-weight:700;margin-bottom:2px}
+  .feedcard .desc{font-size:11px;color:var(--muted);margin-bottom:11px}
+  .feed{display:flex;flex-direction:column;gap:0;max-height:560px;overflow-y:auto}
+  .fitem{display:flex;gap:10px;font-size:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .fitem:last-child{border-bottom:none}
+  .fitem{animation:fin .35s var(--ease-out)}
+  @keyframes fin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+  .fic{flex:0 0 auto;width:25px;height:25px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .fic.up{background:var(--teal-soft)} .fic.cal{background:var(--blue-soft)} .fic.warn{background:var(--amber-soft)}
+  .fitem .ft{color:var(--muted);font-size:10.5px;margin-top:2px}
+  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:34px 14px;line-height:1.6}
+
+  /* Modal */
+  .overlay{position:fixed;inset:0;background:rgba(20,30,50,.45);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;opacity:0;transition:opacity .2s var(--ease-out)}
+  .overlay.show{display:flex;opacity:1}
+  .modal{background:var(--panel);border-radius:16px;width:600px;max-width:100%;max-height:92vh;overflow:auto;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.3);transform-origin:center;transform:scale(.95);opacity:0;transition:transform .24s var(--ease-out),opacity .24s var(--ease-out)}
+  .overlay.show .modal{transform:scale(1);opacity:1}
+  .modal .close{float:right;background:none;color:var(--muted);font-size:24px;padding:0 6px;cursor:pointer;box-shadow:none}
+  .modal .close:hover{background:none;color:var(--ink)}
+  .modal h2{font-size:18px;font-weight:800}
+  .modal .msub{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .explain{background:var(--blue-soft);border-radius:11px;padding:12px 14px;font-size:12.5px;color:var(--ink2);margin:16px 0;line-height:1.5}
+
+  .zonewrap{margin:18px 0 6px}
+  .zonebar{position:relative;height:12px;border-radius:7px;overflow:hidden;display:flex}
+  .zonebar .z{height:100%}
+  .zlabels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:5px}
+  .markers{position:relative;height:18px;margin-top:2px}
+  .marker{position:absolute;transform:translateX(-50%);font-size:10px;font-weight:700;white-space:nowrap}
+  .marker.cur{color:var(--ink)} .marker.rec{color:var(--teal-dk)}
+  .marker .tri{display:block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:7px solid currentColor;margin:0 auto 2px}
+  input[type=range]{width:100%;accent-color:var(--blue);height:6px;margin-top:6px}
+  .bigprice{font-size:32px;font-weight:800;text-align:center;letter-spacing:-.03em}
+  .bigprice small{font-size:13px;color:var(--muted);font-weight:500}
+  .simgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
+  .simbox{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px;text-align:center}
+  .simbox .l{color:var(--muted);font-size:11px}
+  .simbox .v{font-size:21px;font-weight:800;margin-top:3px;letter-spacing:-.02em}
+  .verdict{margin-top:14px;padding:13px 15px;border-radius:11px;font-size:13px;line-height:1.5}
+  .verdict.teal{background:var(--teal-soft);color:#15705c} .verdict.amber{background:var(--amber-soft);color:#8a6400} .verdict.red{background:var(--red-soft);color:#bb343a}
+  .recbtn{margin-top:14px;width:100%;background:var(--teal)}
+  .recbtn:hover{background:var(--teal-dk)}
+  details.bd{margin-top:16px;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  details.bd summary{padding:11px 14px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2);background:#fbfcfd;list-style:none}
+  details.bd summary::-webkit-details-marker{display:none}
+  details.bd summary::before{content:'▸ ';color:var(--muted)}
+  details.bd[open] summary::before{content:'▾ '}
+  .brow{display:flex;justify-content:space-between;padding:9px 14px;font-size:12.5px;border-top:1px solid var(--line)}
+  .brow.minus span:last-child{color:var(--red)}
+  .brow.total{background:#fbfcfd;font-weight:800}
+  .ranking{margin-top:13px;font-size:12px;color:var(--muted)}
+  .ranking .me{color:var(--blue);font-weight:700}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:13px 22px;border-radius:11px;font-size:13px;font-weight:600;z-index:99;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:90vw;animation:tin .3s var(--ease-out)}
+  @keyframes tin{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+  .recbtnrow{display:flex;gap:9px;margin-top:14px}
+  .recbtnrow button{flex:1}
 </style>
 </head>
 <body>
-  <h1>Motor de rentabilidad — prototipo</h1>
-  <div class="sub">Cuánto queda de verdad en cada venta, descontando comisión de ML, envío e impuestos.</div>
-  <table>
-    <thead>
-      <tr><th>Producto</th><th>Precio</th><th>Comisión</th><th>Envío</th><th>Impuestos</th><th>Costo</th><th>Te queda</th></tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-  <p class="note">Te queda = Precio − Comisión ML − Envío − Impuestos − Costo. Datos de ejemplo.</p>
+<div class="topbar">
+  <div class="tb-left">
+    <img src="logo-realtrends.svg" alt="Real Trends">
+    <div class="divider"></div>
+    <div class="module"><span class="name">Profit</span><span class="tag">Rentabilidad inteligente</span></div>
+  </div>
+  <div class="conn"><span class="dot"></span>Tu cuenta de Mercado Libre está conectada · actualizado recién</div>
+</div>
+
+<div class="wrap">
+
+  <div class="phead">
+    <div>
+      <div class="crumb"><span>Real Trends</span><span class="sep">›</span><b>Profit</b><span class="sep">›</span><span>Panel</span></div>
+      <h1>Rentabilidad y precios</h1>
+      <div class="sub">Cuánto te queda de verdad en cada venta y cómo el sistema ajusta tus precios cuando suben los costos.</div>
+    </div>
+    <div class="phead-actions">
+      <button class="ghost sm" onclick="simularMes()">Ver el mes que viene →</button>
+      <button class="teal sm" onclick="indexarAhora()">Ajustar precios ahora</button>
+    </div>
+  </div>
+
+  <!-- Hoy en el mercado -->
+  <div class="market" id="market"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <!-- Controles -->
+  <div class="controls">
+    <div class="card">
+      <h3>¿Cómo querés que trabaje?</h3>
+      <div class="desc">Elegí cuánta libertad le das al sistema para mover tus precios.</div>
+      <div class="modes" id="modes">
+        <div class="mode active" data-mode="auto" onclick="setMode('auto')">Automático<small>lo hago solo</small></div>
+        <div class="mode" data-mode="sugerido" onclick="setMode('sugerido')">Te sugiero<small>vos aprobás</small></div>
+        <div class="mode" data-mode="manual" onclick="setMode('manual')">Manual<small>no toco nada</small></div>
+      </div>
+      <div class="btnrow">
+        <button onclick="simularMes()">Ver cómo sigue el mes que viene →</button>
+        <button class="ghost" onclick="resetAll()">Reiniciar</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Protección contra la suba de costos</h3>
+      <div class="desc">Cuando todo aumenta, subimos tus precios lo justo para que sigas ganando lo mismo. Nadie más hace esto.</div>
+      <div class="infl-row">
+        <div class="field"><label>¿Cuánto aumentó este mes?</label><input type="number" id="ipc" value="2.4" step="0.1"> </div>
+        <div class="field"><label>Seguir el precio del dólar</label><select id="dolarSel">
+          <option value="oficial">Dólar oficial</option>
+          <option value="mep" selected>Dólar (promedio)</option>
+          <option value="blue">Dólar blue</option>
+        </select></div>
+        <div class="field"><label>No subir más de</label><input type="number" id="tope" value="15" step="1"></div>
+        <button class="teal" onclick="indexarAhora()">Ajustar precios ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+    <div>
+      <!-- Chart -->
+      <div class="card chartcard">
+        <h3>Tu ganancia mes a mes</h3>
+        <div class="leg">
+          <span><span class="ldot" style="background:var(--teal)"></span>Con Real Trends Profit (la cuidamos)</span>
+          <span><span class="ldot" style="background:var(--red)"></span>Si no hacés nada (la inflación te la come)</span>
+        </div>
+        <div id="chart"></div>
+      </div>
+
+      <div class="sec-h">Cuánto ganás de verdad en cada producto <small>· tocá un producto para ver a qué precio conviene venderlo</small></div>
+      <div class="tbar">
+        <div class="chips" id="chips">
+          <div class="chip active" data-f="todos" onclick="setFilter('todos')">Todos<span class="ct" id="c-todos">0</span></div>
+          <div class="chip" data-f="teal" onclick="setFilter('teal')">Buena ganancia<span class="ct" id="c-teal">0</span></div>
+          <div class="chip" data-f="amber" onclick="setFilter('amber')">Ganás poco<span class="ct" id="c-amber">0</span></div>
+          <div class="chip" data-f="red" onclick="setFilter('red')">Perdiendo<span class="ct" id="c-red">0</span></div>
+        </div>
+        <button class="teal sm" onclick="arreglarTodos()">Arreglar los que pierden</button>
+        <div class="search"><input id="buscar" type="text" placeholder="Buscar producto…" oninput="render()"></div>
+      </div>
+      <div class="tablecard"><div class="tscroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="sortable" data-k="nombre" onclick="setSort('nombre')">Producto</th>
+              <th class="sortable" data-k="precio" onclick="setSort('precio')">Precio</th>
+              <th>Comisión ML</th>
+              <th>Envío</th>
+              <th>Cuotas</th>
+              <th>Impuestos</th>
+              <th>Te cuesta</th>
+              <th class="sortable" data-k="queda" onclick="setSort('queda')">Te queda</th>
+              <th>Qué conviene hacer</th>
+              <th class="sortable" data-k="estado" onclick="setSort('estado')">Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div></div>
+      <p class="footnote">Lo que te queda = Precio − Comisión de Mercado Libre − Envío − Costo de las cuotas sin interés − Impuestos − Lo que te cuesta el producto. Datos de ejemplo para la demo.</p>
+    </div>
+
+    <div>
+      <div class="feedcard">
+        <h3>Qué fue haciendo el sistema</h3>
+        <div class="desc">Cada cambio queda registrado, con el motivo.</div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
 
 <script>
-const PRODUCTOS = [
-  {nombre:'Auriculares Bluetooth XT', precio:48900, costo:19000, comisionPct:14.5, envio:3200, iibb:3.5},
-  {nombre:'Termo acero 1L premium',   precio:32500, costo:15000, comisionPct:16.2, envio:2800, iibb:4.0},
-  {nombre:'Zapatillas running Z4',    precio:89900, costo:40000, comisionPct:15.5, envio:0,    iibb:4.0},
-  {nombre:'Cafetera express compacta',precio:128000,costo:58000, comisionPct:13.5, envio:0,    iibb:3.0},
-  {nombre:'Mochila urbana antirrobo', precio:41200, costo:23500, comisionPct:14.0, envio:2900, iibb:3.5},
-  {nombre:'Set sábanas algodón',      precio:54000, costo:39000, comisionPct:14.0, envio:0,    iibb:4.0},
-];
-const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+// ---------- Mercado (datos simples, pre-cargados) ----------
+const MK0 = { mesIdx:0, meses:['Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+  inflacion:2.4, dolar:{oficial:1190, mep:1235, blue:1255} };
+let MK = JSON.parse(JSON.stringify(MK0));
 
+// ---------- Catálogo ----------
+const SEED = [
+  {sku:'AUR-220',nombre:'Auriculares Bluetooth XT',cat:'Electrónica',prov:'CABA',precio:48900,costo:16,moneda:'USD',comisionPct:14.5,envioTipo:'Envío gratis',envio:3200,cuotas:6,iibb:3.5,stock:42,comp:[44900,46500,48900,51200,53000]},
+  {sku:'TER-101',nombre:'Termo acero 1L premium',cat:'Hogar',prov:'Córdoba',precio:32500,costo:15000,moneda:'ARS',comisionPct:16.2,envioTipo:'A cargo del comprador',envio:2800,cuotas:3,iibb:4.0,stock:8,comp:[29900,31000,32500,33800,35000]},
+  {sku:'ZAP-440',nombre:'Zapatillas running Z4',cat:'Indumentaria',prov:'Santa Fe',precio:89900,costo:40000,moneda:'ARS',comisionPct:15.5,envioTipo:'Envío gratis',envio:0,cuotas:12,iibb:4.0,stock:120,comp:[84900,87000,89900,93000,97500]},
+  {sku:'CAF-077',nombre:'Cafetera express compacta',cat:'Electrohogar',prov:'CABA',precio:128000,costo:58000,moneda:'ARS',comisionPct:13.5,envioTipo:'Envío gratis',envio:0,cuotas:12,iibb:3.0,stock:3,comp:[119000,124000,128000,131000,138000]},
+  {sku:'MOC-012',nombre:'Mochila urbana antirrobo',cat:'Accesorios',prov:'Buenos Aires',precio:41200,costo:23500,moneda:'ARS',comisionPct:14.0,envioTipo:'A cargo del comprador',envio:2900,cuotas:3,iibb:3.5,stock:60,comp:[37900,39500,41200,42000,44900]},
+  {sku:'LED-330',nombre:'Tira LED RGB 5m + control',cat:'Iluminación',prov:'Mendoza',precio:18900,costo:6,moneda:'USD',comisionPct:14.0,envioTipo:'A cargo del comprador',envio:2600,cuotas:0,iibb:3.0,stock:200,comp:[16900,17900,18900,19500,21000]},
+  {sku:'SMW-560',nombre:'Smartwatch Fit Pro',cat:'Electrónica',prov:'CABA',precio:67500,costo:27,moneda:'USD',comisionPct:14.5,envioTipo:'Envío gratis',envio:0,cuotas:6,iibb:3.5,stock:15,comp:[62000,65000,67500,70000,74900]},
+  {sku:'SAB-330',nombre:'Set sábanas algodón 2 plazas',cat:'Hogar',prov:'Tucumán',precio:54000,costo:39000,moneda:'ARS',comisionPct:14.0,envioTipo:'Envío gratis',envio:0,cuotas:6,iibb:4.0,stock:25,comp:[49900,52000,54000,56000,59000]},
+];
+let DATA = clone(SEED), SHADOW = clone(SEED), HISTORY = [], FEED = [], MODE='auto';
+const GANA_MIN = 12, GANA_OBJ = 22;   // % de ganancia: mínimo aceptable y objetivo
+
+function clone(x){return JSON.parse(JSON.stringify(x));}
+const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+const cuotasPctMap = {0:0,3:4.5,6:8.5,12:14};
+
+function costoARS(p){ return p.moneda==='USD' ? p.costo * MK.dolar[document.getElementById('dolarSel').value] : p.costo; }
+
+// costos proporcionales al precio (en %) y costos fijos (en $)
+function partes(p){
+  const kPct = p.comisionPct + (cuotasPctMap[p.cuotas]||0) + 0.8 + (p.iibb + 5); // comisión + cuotas + fee MP + impuestos
+  const fijo = p.envio + (p.precio<22000?1095:0) + costoARS(p);
+  return {kPct, fijo};
+}
 function calc(p){
-  const comision = p.precio * p.comisionPct/100;
-  const impuestos = p.precio * (p.iibb + 5)/100;
-  const queda = p.precio - comision - p.envio - impuestos - p.costo;
-  return {comision, impuestos, queda};
+  const {kPct,fijo}=partes(p);
+  const comision=p.precio*p.comisionPct/100;
+  const cuotasCost=p.precio*(cuotasPctMap[p.cuotas]||0)/100;
+  const mp=p.precio*0.008;
+  const cargoFijo=p.precio<22000?1095:0;
+  const impuestos=p.precio*(p.iibb+5)/100;
+  const cProd=costoARS(p);
+  const queda=p.precio*(1-kPct/100)-fijo;
+  const pct=queda/p.precio*100;
+  const estado=pct<0?'red':pct<GANA_MIN?'amber':'teal';
+  return {comision,cuotasCost,mp,cargoFijo,impuestos,cProd,queda,pct,estado};
+}
+function precioParaGanancia(p,objPct){
+  const {kPct,fijo}=partes(p);
+  return fijo/(1-kPct/100-objPct/100);
+}
+function rank(p){ const a=[...p.comp,p.precio].sort((x,y)=>x-y); return {pos:a.indexOf(p.precio)+1,total:a.length,arr:a}; }
+
+function recomendado(p){
+  const maxComp=Math.max(...p.comp);
+  let precio=precioParaGanancia(p,GANA_OBJ);
+  precio=Math.min(precio,maxComp);                 // no más caro que el más caro del mercado
+  precio=Math.max(precio,precioParaGanancia(p,GANA_MIN)); // ni menos que el mínimo
+  precio=Math.round(precio/100)*100;
+  const t={...p,precio}; const c=calc(t);
+  return {precio,pct:c.pct,pos:rank(t).pos};
+}
+function accion(p,c){
+  const r=rank(p);
+  if(c.pct<0) return {label:'Pausar y revisar',cls:'red',detail:'a este precio estás perdiendo plata'};
+  if(p.stock<5) return {label:'Subir un poco',cls:'blue',detail:'queda poco stock, podés ganar más'};
+  if(c.pct<GANA_MIN) return {label:'Subir el precio',cls:'amber',detail:'estás ganando muy poco'};
+  if(r.pos<=3 && c.pct>GANA_OBJ) return {label:'Subir un poco',cls:'teal',detail:'tenés margen y seguís competitivo'};
+  return {label:'Dejar como está',cls:'teal',detail:'buen precio'};
 }
 
-const tb = document.getElementById('tbody');
-PRODUCTOS.forEach(p => {
-  const c = calc(p);
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td>${p.nombre}</td>
-    <td class="num">${fmt(p.precio)}</td>
-    <td class="num">−${fmt(c.comision)}</td>
-    <td class="num">${p.envio ? '−'+fmt(p.envio) : '$0'}</td>
-    <td class="num">−${fmt(c.impuestos)}</td>
-    <td class="num">−${fmt(p.costo)}</td>
-    <td class="num ${c.queda<0?'neg':'pos'}"><b>${fmt(c.queda)}</b></td>`;
-  tb.appendChild(tr);
-});
+// ---------- Render ----------
+function renderMarket(){
+  const d=MK.dolar[document.getElementById('dolarSel').value];
+  document.getElementById('market').innerHTML=`
+    <div class="mcard"><div class="ic a">📈</div><div><div class="l">Los costos subieron este mes</div><div class="v">${MK.inflacion.toFixed(1)}%</div><div class="src">según el INDEC</div></div></div>
+    <div class="mcard"><div class="ic b">💵</div><div><div class="l">Dólar hoy</div><div class="v">${fmt(d)}</div><div class="src">se usa para productos importados</div></div></div>
+    <div class="mcard"><div class="ic t">🛒</div><div><div class="l">Comisiones de Mercado Libre</div><div class="v">Al día</div><div class="src">se actualizan solas</div></div></div>
+    <div class="mcard"><div class="ic t">📅</div><div><div class="l">Mes</div><div class="v">${MK.meses[MK.mesIdx]}</div><div class="src">${MK.mesIdx} ajustes hechos</div></div></div>`;
+}
+
+function avg(set){ return set.reduce((a,p)=>a+calc(p).pct,0)/set.length; }
+
+let FILTER='todos', SORT={k:null,asc:false}, lastFlash=[];
+function setFilter(f){ FILTER=f; document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('active',el.dataset.f===f)); render(); }
+function setSort(k){ if(SORT.k===k){ SORT.asc=!SORT.asc; } else { SORT.k=k; SORT.asc=(k==='nombre'); } render(); }
+
+function render(flash){
+  if(flash) lastFlash=flash;
+  flash=flash||[];
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  let totalQueda=0,rojo=0,amar=0,verde=0;
+  // estado completo por producto (para KPIs y contadores sin filtrar)
+  const rows=DATA.map((p,i)=>({p,i,c:calc(p)}));
+  rows.forEach(({c})=>{ totalQueda+=c.queda; if(c.estado==='red')rojo++; else if(c.estado==='amber')amar++; else verde++; });
+  // contadores de chips
+  document.getElementById('c-todos').textContent=DATA.length;
+  document.getElementById('c-teal').textContent=verde;
+  document.getElementById('c-amber').textContent=amar;
+  document.getElementById('c-red').textContent=rojo;
+  // marcar header ordenado
+  document.querySelectorAll('th.sortable').forEach(th=>{ th.classList.remove('sorted','asc'); if(th.dataset.k===SORT.k) th.classList.add(SORT.asc?'asc':'sorted'); });
+  // filtro + búsqueda
+  const q=(document.getElementById('buscar')?.value||'').trim().toLowerCase();
+  let view=rows.filter(({p,c})=> (FILTER==='todos'||c.estado===FILTER) && (!q || p.nombre.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)) );
+  // orden
+  if(SORT.k){
+    const ord={red:0,amber:1,teal:2};
+    view.sort((a,b)=>{
+      let av,bv;
+      if(SORT.k==='nombre'){av=a.p.nombre.toLowerCase();bv=b.p.nombre.toLowerCase();}
+      else if(SORT.k==='precio'){av=a.p.precio;bv=b.p.precio;}
+      else if(SORT.k==='queda'){av=a.c.queda;bv=b.c.queda;}
+      else {av=ord[a.c.estado];bv=ord[b.c.estado];}
+      if(av<bv)return SORT.asc?-1:1; if(av>bv)return SORT.asc?1:-1; return 0;
+    });
+  }
+  if(!view.length){ tb.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:26px">No hay productos en esta vista.</td></tr>'; }
+  view.forEach(({p,i,c})=>{
+    const a=accion(p,c);
+    const tr=document.createElement('tr'); if(flash.includes(p.sku))tr.className='flash'; tr.onclick=()=>openSim(i);
+    const stk=p.stock<5?`<span class="badge low">quedan ${p.stock}</span>`:`<span class="badge">stock ${p.stock}</span>`;
+    const usd=p.moneda==='USD'?'<span class="badge usd">importado</span>':'';
+    const estTxt=c.estado==='teal'?'Buena ganancia':c.estado==='amber'?'Ganás poco':'Estás perdiendo';
+    tr.innerHTML=`
+      <td><div class="prod"><b>${p.nombre}</b><small>${p.cat} · ${p.prov}</small>
+        <div class="tags">${stk}<span class="badge">${p.envioTipo}</span>${p.cuotas?`<span class="badge">${p.cuotas} cuotas</span>`:''}${usd}</div></div></td>
+      <td class="num">${fmt(p.precio)}</td>
+      <td class="num">−${fmt(c.comision)}</td>
+      <td class="num">${p.envio?'−'+fmt(p.envio):'<span style="color:var(--muted)">$0</span>'}</td>
+      <td class="num">${c.cuotasCost?'−'+fmt(c.cuotasCost):'<span style="color:var(--muted)">—</span>'}</td>
+      <td class="num">−${fmt(c.impuestos)}</td>
+      <td class="num">−${fmt(c.cProd)}</td>
+      <td class="num ${c.queda<0?'mneg':'mpos'}"><b>${fmt(c.queda)}</b><br><small style="color:var(--muted)">${c.pct.toFixed(0)}%</small></td>
+      <td class="act ${a.cls}">${a.label}<small>${a.detail}</small></td>
+      <td><span class="pill ${c.estado}">${estTxt}</span></td>`;
+    tb.appendChild(tr);
+  });
+  const prom=avg(DATA), promSin=avg(SHADOW), salvado=prom-promSin;
+  document.getElementById('kpis').innerHTML=`
+    <div class="kpi"><div class="label">Productos</div><div class="val">${DATA.length}</div><div class="hint">conectados con tu cuenta</div></div>
+    <div class="kpi"><div class="label">Ganás en promedio</div><div class="val ${prom<GANA_MIN?'amber':'teal'}">${prom.toFixed(0)}%</div><div class="hint">de cada venta, ya con todo descontado</div></div>
+    <div class="kpi"><div class="label">Te queda por venta (todos juntos)</div><div class="val ${totalQueda<0?'red':''}">${fmt(totalQueda)}</div><div class="hint">sumando una unidad de cada uno</div></div>
+    <div class="kpi"><div class="label">Necesitan tu atención</div><div class="val ${rojo?'red':amar?'amber':'teal'}">${rojo+amar}</div><div class="hint">${rojo} perdiendo · ${amar} ganando poco</div></div>
+    <div class="kpi"><div class="label">Ganancia que evitás perder</div><div class="val blue">+${salvado.toFixed(0)} pts</div><div class="hint">frente a no ajustar nada</div></div>`;
+  renderFeed(); drawChart();
+}
+
+function renderFeed(){
+  const f=document.getElementById('feed');
+  if(!FEED.length){ f.innerHTML='<div class="empty">El sistema está vigilando tus precios.<br>Tocá <b>“Ajustar precios ahora”</b> o <b>“el mes que viene”</b> para verlo en acción.</div>'; return; }
+  f.innerHTML=FEED.slice(0,40).map(e=>`<div class="fitem"><div class="fic ${e.ic}">${e.emoji}</div><div><div>${e.text}</div><div class="ft">${e.time}</div></div></div>`).join('');
+}
+function pushFeed(ic,emoji,text){
+  const t=new Date();
+  FEED.unshift({ic,emoji,text,time:`${MK.meses[MK.mesIdx]} · ${t.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}`});
+}
+
+// ---------- Gráfico ----------
+function drawChart(){
+  const W=640,H=190,pad=36;
+  if(!HISTORY.length) HISTORY.push({mes:MK.meses[0].slice(0,3),real:avg(DATA),nom:avg(SHADOW)});
+  const reals=HISTORY.map(h=>h.real), noms=HISTORY.map(h=>h.nom);
+  const all=[...reals,...noms]; let mn=Math.min(...all,0),mx=Math.max(...all,28);
+  mn=Math.floor(mn/5)*5; mx=Math.ceil(mx/5)*5;
+  const n=HISTORY.length;
+  const x=i=>pad+(n<=1?0:i*(W-pad*2)/(n-1));
+  const y=v=>H-pad-(v-mn)/(mx-mn)*(H-pad*2);
+  const line=a=>a.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  let grid='';
+  const step=Math.max(5,Math.round((mx-mn)/4/5)*5);
+  for(let g=mn;g<=mx;g+=step){ grid+=`<line x1="${pad}" y1="${y(g)}" x2="${W-pad}" y2="${y(g)}" stroke="#eef1f5"/><text x="${pad-7}" y="${y(g)+3}" fill="#9aa6b5" font-size="9.5" text-anchor="end">${g}%</text>`; }
+  const area=`<path d="${line(reals)} L${x(n-1)},${H-pad} L${x(0)},${H-pad} Z" fill="rgba(43,184,154,.10)" stroke="none"/>`;
+  const dots=(a,col)=>a.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${col}" stroke="#fff" stroke-width="1.5"/>`).join('');
+  const labels=HISTORY.map((h,i)=>`<text x="${x(i)}" y="${H-pad+15}" fill="#9aa6b5" font-size="9.5" text-anchor="middle">${h.mes}</text>`).join('');
+  document.getElementById('chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:680px">
+    ${grid}${area}
+    <path d="${line(noms)}" fill="none" stroke="#ef4d54" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="${line(reals)}" fill="none" stroke="#2bb89a" stroke-width="2.5" stroke-linecap="round"/>
+    ${dots(noms,'#ef4d54')}${dots(reals,'#2bb89a')}${labels}</svg>`;
+}
+
+// ---------- Acciones ----------
+function setMode(m){
+  MODE=m; document.querySelectorAll('.mode').forEach(el=>el.classList.toggle('active',el.dataset.mode===m));
+  const t={auto:'Listo. El sistema va a mover los precios solo cuando haga falta.',sugerido:'Listo. Te voy a avisar qué conviene cambiar y vos decidís.',manual:'Listo. No voy a tocar ningún precio. Ojo: con la inflación tu ganancia va a bajar.'};
+  toast(t[m]);
+}
+function ajustar(infl,registrar){
+  const tope=parseFloat(document.getElementById('tope').value)||999;
+  const flashed=[];
+  DATA.forEach(p=>{
+    if(p.moneda!=='USD') p.costo=Math.round(p.costo*(1+infl/100)); // sube lo que te cuesta
+    if(MODE==='manual') return;
+    let suba=Math.min(infl + (p.moneda==='USD'?0.9:0), tope);
+    const nuevo=Math.round(p.precio*(1+suba/100)/100)*100;
+    if(registrar && nuevo!==p.precio){
+      const t = MODE==='auto'?`Subí <b>${p.nombre}</b> de ${fmt(p.precio)} a ${fmt(nuevo)} para que no pierdas ganancia.`
+                             :`Te sugiero subir <b>${p.nombre}</b> a ${fmt(nuevo)} (hoy está ${fmt(p.precio)}).`;
+      pushFeed('up','↑',t); flashed.push(p.sku);
+    }
+    if(MODE!=='sugerido') p.precio=nuevo;
+  });
+  SHADOW.forEach(p=>{ if(p.moneda!=='USD') p.costo=Math.round(p.costo*(1+infl/100)); });
+  return flashed;
+}
+function indexarAhora(){
+  const infl=parseFloat(document.getElementById('ipc').value)||0;
+  const fl=ajustar(infl,true);
+  pushFeed('cal','✓',`Revisé todo el catálogo y ajusté los precios por la suba de costos de este mes (${infl}%).`);
+  render(fl); toast(`Precios ajustados. Tu ganancia quedó protegida.`);
+}
+function simularMes(){
+  if(MK.mesIdx>=MK.meses.length-1){ toast('Llegamos al final del ejemplo. Tocá “Reiniciar”.'); return; }
+  MK.mesIdx++;
+  MK.dolar.oficial=Math.round(MK.dolar.oficial*1.025); MK.dolar.mep=Math.round(MK.dolar.mep*1.022); MK.dolar.blue=Math.round(MK.dolar.blue*1.018);
+  const infl=parseFloat(document.getElementById('ipc').value)||MK.inflacion;
+  pushFeed('cal','📅',`Llegó <b>${MK.meses[MK.mesIdx]}</b>. Lo que te cuestan los productos subió ${infl}% y el dólar también.`);
+  const fl=ajustar(infl,true);
+  if(MODE==='manual') pushFeed('warn','!','Estás en Manual: no toqué los precios, así que tu ganancia bajó con la inflación.');
+  HISTORY.push({mes:MK.meses[MK.mesIdx].slice(0,3),real:avg(DATA),nom:avg(SHADOW)});
+  renderMarket(); render(fl);
+  toast(MODE==='manual'?`Mirá cómo cae tu ganancia cuando no ajustás nada.`:`${MK.meses[MK.mesIdx]}: el sistema defendió tu ganancia solo.`);
+}
+function arreglarTodos(){
+  const flashed=[]; let n=0;
+  DATA.forEach(p=>{
+    const c=calc(p);
+    if(c.estado!=='teal'){
+      const rec=recomendado(p);
+      if(rec.precio!==p.precio){ pushFeed('up','↑',`Subí <b>${p.nombre}</b> de ${fmt(p.precio)} a ${fmt(rec.precio)} para que deje de perder ganancia.`); p.precio=rec.precio; flashed.push(p.sku); n++; }
+    }
+  });
+  if(!n){ toast('Todos tus productos ya tienen buena ganancia 👌'); return; }
+  pushFeed('cal','✓',`Ajusté ${n} producto${n>1?'s':''} que estaba${n>1?'n':''} perdiendo o ganando poco.`);
+  render(flashed); toast(`Listo: arreglé ${n} producto${n>1?'s':''}.`);
+}
+function resetAll(){ DATA=clone(SEED);SHADOW=clone(SEED);MK=clone(MK0);HISTORY=[];FEED=[];FILTER='todos';SORT={k:null,asc:false}; const b=document.getElementById('buscar'); if(b)b.value=''; document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('active',el.dataset.f==='todos')); renderMarket();render(); toast('Demo reiniciada.'); }
+
+// ---------- Simulador ----------
+let simIndex=null;
+function openSim(i){
+  simIndex=i; const p=DATA[i]; const rec=recomendado(p);
+  const min=Math.round(p.precio*0.7/100)*100, max=Math.round(p.precio*1.4/100)*100;
+  document.getElementById('modal').innerHTML=`
+    <button class="close" onclick="closeSim()">×</button>
+    <h2>${p.nombre}</h2>
+    <div class="msub">${p.cat} · te cuesta ${fmt(calc(p).cProd)}${p.moneda==='USD'?' (importado)':''}</div>
+    <div class="explain">Movés el precio y mirás dos cosas: <b>cuánto te queda de ganancia</b> y <b>qué lugar ocupás</b> entre los que venden lo mismo. Bajar el precio te sube en la lista pero te deja menos ganancia. El punto justo lo marcamos con la estrella ⭐.</div>
+    <div class="bigprice"><span id="simPrice"></span> <small id="simPos"></small></div>
+    <div class="zonewrap">
+      <div class="zonebar" id="zonebar"></div>
+      <div class="zlabels"><span>${fmt(min)}</span><span>${fmt(max)}</span></div>
+      <div class="markers" id="markers"></div>
+      <input type="range" id="simSlider" min="${min}" max="${max}" value="${p.precio}" step="100" oninput="updateSim()">
+    </div>
+    <div class="simgrid">
+      <div class="simbox"><div class="l">Te queda de ganancia</div><div class="v" id="simQueda"></div></div>
+      <div class="simbox"><div class="l">Eso es</div><div class="v" id="simPct"></div></div>
+    </div>
+    <div id="simVerdict"></div>
+    <div class="recbtnrow">
+      <button class="ghost" onclick="aplicarPrecio()">Aplicar este precio</button>
+      <button class="teal" onclick="usarRecomendado(${rec.precio})">Usar el recomendado: ${fmt(rec.precio)}</button>
+    </div>
+    <details class="bd"><summary>Ver todo lo que se descuenta del precio</summary><div id="simBreak"></div></details>
+    <div class="ranking" id="simRanking"></div>`;
+  document.getElementById('overlay').classList.add('show');
+  window._rec=rec; window._min=min; window._max=max;
+  updateSim();
+}
+function closeSim(){ document.getElementById('overlay').classList.remove('show'); }
+function aplicarPrecioVal(nuevo,texto){
+  const p=DATA[simIndex]; const ant=p.precio; if(nuevo===ant){ closeSim(); return; }
+  p.precio=nuevo;
+  pushFeed('up','✓',texto.replace('{n}',p.nombre).replace('{a}',fmt(ant)).replace('{p}',fmt(nuevo)));
+  closeSim(); render([p.sku]); toast(`Listo: <b>${p.nombre}</b> quedó en ${fmt(nuevo)}.`);
+}
+function aplicarPrecio(){ aplicarPrecioVal(parseInt(document.getElementById('simSlider').value),'Cambiaste el precio de <b>{n}</b> de {a} a {p}.'); }
+function usarRecomendado(v){ aplicarPrecioVal(v,'Aplicaste el precio recomendado en <b>{n}</b>: de {a} a {p}.'); }
+
+function updateSim(){
+  const base=DATA[simIndex], min=window._min, max=window._max, rec=window._rec;
+  const p={...base,precio:parseInt(document.getElementById('simSlider').value)};
+  const c=calc(p), r=rank(p);
+  document.getElementById('simPrice').textContent=fmt(p.precio);
+  document.getElementById('simPos').textContent=`· quedás ${r.pos}° más barato de ${r.total}`;
+  const q=document.getElementById('simQueda'); q.textContent=fmt(c.queda); q.style.color=c.queda<0?'var(--red)':'var(--teal-dk)';
+  const pc=document.getElementById('simPct'); pc.textContent=c.pct.toFixed(0)+'% del precio'; pc.style.color=c.estado==='red'?'var(--red)':c.estado==='amber'?'var(--amber)':'var(--teal-dk)';
+
+  // zonas de color: rojo (pérdida) / amarillo (poca) / verde (buena)
+  const pBreak=precioParaGanancia(p,0), pMin=precioParaGanancia(p,GANA_MIN);
+  const pos=v=>Math.max(0,Math.min(100,(v-min)/(max-min)*100));
+  const rB=pos(pBreak), rM=pos(pMin);
+  document.getElementById('zonebar').innerHTML=`
+    <div class="z" style="width:${rB}%;background:var(--red)"></div>
+    <div class="z" style="width:${rM-rB}%;background:var(--amber)"></div>
+    <div class="z" style="width:${100-rM}%;background:var(--teal)"></div>`;
+  const curP=pos(p.precio), recP=pos(rec.precio);
+  document.getElementById('markers').innerHTML=`
+    <div class="marker cur" style="left:${curP}%"><span class="tri"></span>vos</div>
+    <div class="marker rec" style="left:${recP}%;top:0">⭐</div>`;
+
+  let cls,txt;
+  if(c.pct<0){ cls='red'; txt=`<b>Cuidado:</b> a ${fmt(p.precio)} estás <b>vendiendo a pérdida</b>. Quedás bien arriba en la lista, pero perdés ${fmt(-c.queda)} en cada venta. No conviene.`; }
+  else if(c.pct<GANA_MIN){ cls='amber'; txt=`A ${fmt(p.precio)} ganás muy poco (${c.pct.toFixed(0)}%). Sí, estás ${r.pos}° más barato, pero casi no te queda nada. Te conviene subirlo un poco.`; }
+  else if(p.precio>rec.precio+200){ cls='amber'; txt=`Ganás bien (${c.pct.toFixed(0)}%), pero a ${fmt(p.precio)} quedás ${r.pos}° y podés estar perdiendo ventas por caro. La estrella marca un precio más competitivo que también te deja buena ganancia.`; }
+  else{ cls='teal'; txt=`<b>Buen precio.</b> Te queda ${fmt(c.queda)} (${c.pct.toFixed(0)}%) y seguís ${r.pos}° más barato. Acá es donde el sistema dejaría tu publicación.`; }
+  document.getElementById('simVerdict').innerHTML=`<div class="verdict ${cls}">${txt}</div>`;
+
+  document.getElementById('simBreak').innerHTML=`
+    <div class="brow"><span>Precio de venta</span><span><b>${fmt(p.precio)}</b></span></div>
+    <div class="brow minus"><span>Comisión de Mercado Libre</span><span>−${fmt(c.comision)}</span></div>
+    <div class="brow minus"><span>Envío</span><span>−${fmt(p.envio)}</span></div>
+    <div class="brow minus"><span>Costo de las cuotas sin interés</span><span>−${fmt(c.cuotasCost)}</span></div>
+    <div class="brow minus"><span>Comisión de Mercado Pago</span><span>−${fmt(c.mp)}</span></div>
+    ${c.cargoFijo?`<div class="brow minus"><span>Cargo fijo de Mercado Libre</span><span>−${fmt(c.cargoFijo)}</span></div>`:''}
+    <div class="brow minus"><span>Impuestos</span><span>−${fmt(c.impuestos)}</span></div>
+    <div class="brow minus"><span>Lo que te cuesta el producto</span><span>−${fmt(c.cProd)}</span></div>
+    <div class="brow total"><span>Te queda</span><span style="color:${c.queda<0?'var(--red)':'var(--teal-dk)'}">${fmt(c.queda)} · ${c.pct.toFixed(0)}%</span></div>`;
+  document.getElementById('simRanking').innerHTML='Lo que cobran los demás: '+r.arr.map(v=>v===p.precio?`<span class="me">vos ${fmt(v)}</span>`:fmt(v)).join(' · ');
+}
+
+function toast(msg){ const f=document.createElement('div'); f.className='toast'; f.innerHTML=msg; document.body.appendChild(f); setTimeout(()=>f.remove(),3200); }
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeSim();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSim();});
+document.getElementById('dolarSel').addEventListener('change',()=>{renderMarket();render();});
+
+renderMarket(); render();
 </script>
 </body>
 </html>
