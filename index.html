@@ -121,6 +121,7 @@
   .search .si svg{width:14px;height:14px}
 
   /* Chart */
+  .chartcard .ch-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
   .chartcard h3{font-size:14px;font-weight:700}
   .chartcard .leg{display:flex;gap:18px;font-size:12px;color:var(--ink2);margin:8px 0 4px;flex-wrap:wrap}
   .chartcard .leg span{display:flex;align-items:center;gap:7px}
@@ -242,8 +243,7 @@
       <div class="sub">Cuánto te queda de verdad en cada venta y cómo el sistema ajusta tus precios cuando suben los costos.</div>
     </div>
     <div class="phead-actions">
-      <button class="ghost sm" onclick="resetAll()">Reiniciar</button>
-      <button class="teal sm" onclick="simularMes()">Simular el mes que viene →</button>
+      <button class="ghost sm" onclick="resetAll()">Reiniciar demo</button>
     </div>
   </div>
 
@@ -283,7 +283,10 @@
   <div class="topgrid">
     <div>
       <div class="card chartcard">
-        <h3>Tu ganancia mes a mes</h3>
+        <div class="ch-head">
+          <h3>Tu ganancia mes a mes</h3>
+          <button class="teal sm" onclick="simularMes()">Simular el mes que viene →</button>
+        </div>
         <div class="leg">
           <span><span class="ldot" style="background:var(--teal)"></span>Con Real Trends Profit</span>
           <span><span class="ldot" style="background:var(--red)"></span>Si no ajustás los precios</span>
