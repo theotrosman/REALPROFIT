@@ -117,6 +117,13 @@
   button.teal:focus-visible{box-shadow:0 0 0 3px rgba(43,184,154,.32)}
   button.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink2);box-shadow:none} @media(hover:hover) and (pointer:fine){button.ghost:hover{background:var(--bg);border-color:#d6dde6}}
   button.sm{padding:8px 13px;font-size:12.5px}
+  button.done{background:var(--teal-soft);color:var(--teal-dk);box-shadow:none;cursor:default;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+  button.done svg{width:15px;height:15px;stroke-width:2.5}
+  @media(hover:hover) and (pointer:fine){button.teal.done:hover{background:var(--teal-soft)}}
+  button.done:active{transform:none}
+  .infl-help{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.45;transition:color .2s var(--ease-out)}
+  .infl-help svg{width:13px;height:13px;flex:0 0 auto}
+  .infl-help.done{color:var(--teal-dk)}
   .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 
   /* Banda superior: gráfico + actividad */
@@ -309,8 +316,9 @@
           <option value="blue">Dólar blue</option>
         </select></div>
         <div class="field"><label>No subir más de</label><input type="number" id="tope" value="15" step="1"></div>
-        <button class="teal" onclick="indexarAhora()">Ajustar precios ahora</button>
+        <button class="teal" id="btnAjustar" onclick="indexarAhora()">Ajustar precios ahora</button>
       </div>
+      <div class="infl-help" id="inflHelp"></div>
     </div>
   </div>
 
@@ -595,11 +603,29 @@ function ajustar(infl,registrar){
   SHADOW.forEach(p=>{ if(p.moneda!=='USD') p.costo=Math.round(p.costo*(1+infl/100)); });
   return flashed;
 }
+// "Ajustar precios ahora" es una acción de UNA vez por mes: aplica la suba de costos
+// del mes y defiende el margen. Sin este candado, hacer clic repetido inflaba los costos.
+let mesAjustado=false;
+function setAjustarUI(){
+  const b=document.getElementById('btnAjustar'), h=document.getElementById('inflHelp');
+  if(b){
+    if(mesAjustado){ b.classList.add('done'); b.innerHTML=`${IC.check}<span>Listo por este mes</span>`; b.setAttribute('aria-label','Ya ajustaste los precios de este mes'); }
+    else { b.classList.remove('done'); b.textContent='Ajustar precios ahora'; b.removeAttribute('aria-label'); }
+  }
+  if(h){
+    h.classList.toggle('done',mesAjustado);
+    h.innerHTML = mesAjustado
+      ? `${IC.check}<span>Ya apliqué la suba de este mes. Para repetirlo, avanzá con “Simular el mes que viene”.</span>`
+      : `<span>Se aplica una sola vez por mes, así no inflás los costos sin querer.</span>`;
+  }
+}
 function indexarAhora(){
+  if(mesAjustado){ toast('Ya está aplicado este mes ✓ Para verlo otra vez, tocá <b>“Simular el mes que viene”</b>.'); return; }
   const infl=parseFloat(document.getElementById('ipc').value)||0;
   const fl=ajustar(infl,true);
+  mesAjustado=true; setAjustarUI();
   pushFeed('cal','check',`Revisé todo el catálogo y ajusté los precios por la suba de costos de este mes (${infl}%).`);
-  render(fl); toast(`Precios ajustados. Tu ganancia quedó protegida.`);
+  render(fl); toast('Precios ajustados ✓ Tu ganancia quedó protegida. Ahora probá <b>“Simular el mes que viene”</b>.');
 }
 function simularMes(){
   if(MK.mesIdx>=MK.meses.length-1){ toast('Llegamos al final del ejemplo. Tocá “Reiniciar”.'); return; }
@@ -610,6 +636,7 @@ function simularMes(){
   const fl=ajustar(infl,true);
   if(MODE==='manual') pushFeed('warn','alert','Estás en Manual: no toqué los precios, así que tu ganancia bajó con la inflación.');
   HISTORY.push({mes:MK.meses[MK.mesIdx].slice(0,3),real:avg(DATA),nom:avg(SHADOW)});
+  mesAjustado=true; setAjustarUI(); // el mes ya quedó procesado al avanzar
   renderMarket(); render(fl);
   toast(MODE==='manual'?`Mirá cómo cae tu ganancia cuando no ajustás nada.`:`${MK.meses[MK.mesIdx]}: el sistema defendió tu ganancia solo.`);
 }
@@ -626,7 +653,7 @@ function arreglarTodos(){
   pushFeed('cal','check',`Ajusté ${n} producto${n>1?'s':''} que estaba${n>1?'n':''} perdiendo o ganando poco.`);
   render(flashed); toast(`Listo: arreglé ${n} producto${n>1?'s':''}.`);
 }
-function resetAll(){ DATA=clone(SEED);SHADOW=clone(SEED);MK=clone(MK0);HISTORY=[];FEED=[];FILTER='todos';SORT={k:null,asc:false}; const b=document.getElementById('buscar'); if(b)b.value=''; document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('active',el.dataset.f==='todos')); renderMarket();render(); toast('Demo reiniciada.'); }
+function resetAll(){ DATA=clone(SEED);SHADOW=clone(SEED);MK=clone(MK0);HISTORY=[];FEED=[];FILTER='todos';SORT={k:null,asc:false}; const b=document.getElementById('buscar'); if(b)b.value=''; document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('active',el.dataset.f==='todos')); mesAjustado=false; setAjustarUI(); renderMarket();render(); toast('Demo reiniciada.'); }
 
 // ---------- Simulador ----------
 let simIndex=null;
@@ -725,7 +752,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSim();});
 document.getElementById('dolarSel').addEventListener('change',()=>{renderMarket();render();});
 
 document.getElementById('searchIcon').innerHTML = IC.search;
-renderMarket(); render();
+setAjustarUI(); renderMarket(); render();
 </script>
 </body>
 </html>
