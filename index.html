@@ -24,10 +24,24 @@
     --ease-out:cubic-bezier(.23,1,.32,1); --ease-io:cubic-bezier(.32,.72,0,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-tap-highlight-color:transparent}
+  ::selection{background:rgba(0,101,243,.16);color:var(--ink)}
   body{font-family:'Proxima Nova',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:40px}
+  /* Scrollbars finos y discretos */
+  .feed,.tscroll,.modal{scrollbar-width:thin;scrollbar-color:#cdd5e0 transparent}
+  .feed::-webkit-scrollbar,.tscroll::-webkit-scrollbar,.modal::-webkit-scrollbar{width:10px;height:10px}
+  .feed::-webkit-scrollbar-track,.tscroll::-webkit-scrollbar-track,.modal::-webkit-scrollbar-track{background:transparent}
+  .feed::-webkit-scrollbar-thumb,.tscroll::-webkit-scrollbar-thumb,.modal::-webkit-scrollbar-thumb{background:#d3dae4;border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+  @media(hover:hover) and (pointer:fine){.feed::-webkit-scrollbar-thumb:hover,.tscroll::-webkit-scrollbar-thumb:hover,.modal::-webkit-scrollbar-thumb:hover{background:#b9c3d1;background-clip:padding-box}}
   h1,h2,h3{letter-spacing:-.01em;font-weight:700}
   svg{display:block}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* Entrada (una sola vez al cargar) — los contenedores son estáticos, no se re-animan al filtrar */
+  @keyframes introUp{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+  .phead,.market,.kpis,.controls,.topgrid,.tablewrap{animation:introUp .32s var(--ease-out) both}
+  .market{animation-delay:.04s} .kpis{animation-delay:.08s} .controls{animation-delay:.12s}
+  .topgrid{animation-delay:.16s} .tablewrap{animation-delay:.2s}
 
   /* Topbar */
   .topbar{background:var(--panel);border-bottom:1px solid var(--line);padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:30}
@@ -37,14 +51,17 @@
   .module{display:flex;align-items:center;gap:9px}
   .module .name{font-weight:700;font-size:17px;color:var(--ink)}
   .module .tag{background:var(--teal-soft);color:var(--teal-dk);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
-  .conn{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+  .conn{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);white-space:nowrap}
+  .conn-short{display:none}
+  @media(max-width:720px){.topbar{padding:0 16px}.conn-full{display:none}.conn-short{display:inline}}
+  @media(max-width:430px){.module .tag{display:none}.conn-short{display:none}}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(43,184,154,.5);animation:pulse 2.4s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(43,184,154,.5)}70%{box-shadow:0 0 0 6px rgba(43,184,154,0)}100%{box-shadow:0 0 0 0 rgba(43,184,154,0)}}
 
   .wrap{max-width:1280px;margin:0 auto;padding:18px 28px}
 
   /* Page header (módulo embebido) */
-  .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .phead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
   .crumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:6px}
   .crumb b{color:var(--ink2);font-weight:600}
   .crumb .sep{opacity:.6}
@@ -53,27 +70,27 @@
   .phead-actions{display:flex;gap:9px;align-items:center}
 
   /* Market strip */
-  .market{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+  .market{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
   @media(max-width:860px){.market{grid-template-columns:repeat(2,1fr)}}
   .mcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 14px;display:flex;align-items:center;gap:11px;box-shadow:var(--shadow)}
   .mcard .ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
   .mcard .ic svg{width:18px;height:18px}
   .mcard .ic.b{background:var(--blue-soft);color:var(--blue)} .mcard .ic.t{background:var(--teal-soft);color:var(--teal-dk)} .mcard .ic.a{background:var(--amber-soft);color:var(--amber)} .mcard .ic.g{background:#eef1f5;color:var(--ink2)}
   .mcard .l{font-size:11px;color:var(--muted)}
-  .mcard .v{font-size:16.5px;font-weight:700;margin-top:1px;letter-spacing:-.01em}
+  .mcard .v{font-size:16.5px;font-weight:700;margin-top:1px;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
   .mcard .src{font-size:10px;color:var(--muted)}
 
   /* KPIs */
-  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
   @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow)}
   .kpi .label{color:var(--muted);font-size:11.5px;font-weight:500}
-  .kpi .val{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.03em}
+  .kpi .val{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
   .kpi .val.red{color:var(--red)} .kpi .val.teal{color:var(--teal-dk)} .kpi .val.amber{color:var(--amber)} .kpi .val.blue{color:var(--blue)}
   .kpi .hint{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.35}
 
   /* Controls */
-  .controls{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-bottom:16px}
+  .controls{display:grid;grid-template-columns:1fr 1.25fr;gap:12px;margin-bottom:18px}
   @media(max-width:980px){.controls{grid-template-columns:1fr}.panel-grid{grid-template-columns:1fr!important}.hero h2{font-size:22px}}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
   .card h3{font-size:13.5px;font-weight:700;margin-bottom:3px}
@@ -126,7 +143,8 @@
   .search .si svg{width:14px;height:14px}
 
   /* Chart */
-  .chartcard .ch-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .chartcard .ch-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .chartcard .ch-head button{align-self:center}
   .chartcard h3{font-size:14px;font-weight:700}
   .chartcard .leg{display:flex;gap:18px;font-size:12px;color:var(--ink2);margin:8px 0 4px;flex-wrap:wrap}
   .chartcard .leg span{display:flex;align-items:center;gap:7px}
@@ -146,6 +164,7 @@
   thead th.sortable.asc::after{content:' ▴';color:var(--blue)}
   tbody tr{border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s var(--ease-out)}
   @media(hover:hover) and (pointer:fine){tbody tr:hover{background:#f8fafc}}
+  tbody tr:active{background:#eef3fb}
   tbody tr:last-child{border-bottom:none}
   tr.flash{animation:rowflash 1.2s ease}
   @keyframes rowflash{0%{background:var(--blue-soft)}100%{background:#fff}}
@@ -214,12 +233,12 @@
   input[type=range]:active::-moz-range-thumb{transform:scale(1.14)}
   input[type=range]:focus-visible{outline:none}
   input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 1px 4px rgba(0,101,243,.4),var(--focus)}
-  .bigprice{font-size:32px;font-weight:700;text-align:center;letter-spacing:-.03em}
+  .bigprice{font-size:32px;font-weight:700;text-align:center;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
   .bigprice small{font-size:13px;color:var(--muted);font-weight:500}
   .simgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
   .simbox{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:13px;text-align:center}
   .simbox .l{color:var(--muted);font-size:11px}
-  .simbox .v{font-size:21px;font-weight:700;margin-top:3px;letter-spacing:-.02em}
+  .simbox .v{font-size:21px;font-weight:700;margin-top:3px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
   .verdict{margin-top:14px;padding:13px 15px;border-radius:var(--r);font-size:13px;line-height:1.5}
   .verdict.teal{background:var(--teal-soft);color:#15705c} .verdict.amber{background:var(--amber-soft);color:#8a6400} .verdict.red{background:var(--red-soft);color:#bb343a}
   .recbtn{margin-top:14px;width:100%;background:var(--teal)}
@@ -247,7 +266,7 @@
     <div class="divider"></div>
     <div class="module"><span class="name">Profit</span><span class="tag">Rentabilidad inteligente</span></div>
   </div>
-  <div class="conn"><span class="dot"></span>Tu cuenta de Mercado Libre está conectada · actualizado recién</div>
+  <div class="conn"><span class="dot"></span><span class="conn-full">Tu cuenta de Mercado Libre está conectada · actualizado recién</span><span class="conn-short">Conectado · actualizado recién</span></div>
 </div>
 
 <div class="wrap">
