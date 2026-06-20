@@ -7,22 +7,25 @@
 <meta name="theme-color" content="#0065f3">
 <title>Real Trends · Profit</title>
 <link rel="icon" href="logo-realtrends.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  /* Tipografía oficial de Real Trends: Proxima Nova */
+  @font-face{font-family:'Proxima Nova';src:url('fonts/proxima-regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+  @font-face{font-family:'Proxima Nova';src:url('fonts/proxima-semibold.otf') format('opentype');font-weight:600;font-style:normal;font-display:swap}
+  @font-face{font-family:'Proxima Nova';src:url('fonts/proxima-bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}
   :root{
-    --bg:#f4f6f8; --panel:#ffffff; --ink:#1f2733; --ink2:#3b4654; --muted:#7a8595; --line:#e7ebf0;
-    --blue:#0065f3; --blue-dk:#0559cf; --blue-soft:#e8f1ff;
-    --teal:#2bb89a; --teal-dk:#1d9c81; --teal-soft:#e6f7f2;
-    --amber:#e0a100; --amber-soft:#fdf4dc;
-    --red:#ef4d54; --red-soft:#fdeaeb;
-    --shadow:0 1px 3px rgba(20,40,80,.06),0 6px 18px rgba(20,40,80,.05);
+    --bg:#f5f7f9; --panel:#ffffff; --ink:#202632; --ink2:#414b59; --muted:#828d9c; --line:#e9edf2;
+    --blue:#0065f3; --blue-dk:#0559cf; --blue-soft:#eaf2ff;
+    --teal:#2bb89a; --teal-dk:#1d9c81; --teal-soft:#e7f7f2;
+    --amber:#d99a00; --amber-soft:#fdf3d9;
+    --red:#ef4d54; --red-soft:#fdebec;
+    --shadow:0 1px 2px rgba(22,44,84,.05),0 4px 14px rgba(22,44,84,.04);
+    --r:12px;
     --ease-out:cubic-bezier(.23,1,.32,1); --ease-io:cubic-bezier(.32,.72,0,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:36px}
-  h1,h2,h3{letter-spacing:-.02em}
+  body{font-family:'Proxima Nova',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:40px}
+  h1,h2,h3{letter-spacing:-.01em;font-weight:700}
+  svg{display:block}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
   /* Topbar */
@@ -31,7 +34,7 @@
   .tb-left img{height:26px;display:block}
   .divider{width:1px;height:26px;background:var(--line)}
   .module{display:flex;align-items:center;gap:9px}
-  .module .name{font-weight:800;font-size:17px;color:var(--ink)}
+  .module .name{font-weight:700;font-size:17px;color:var(--ink)}
   .module .tag{background:var(--teal-soft);color:var(--teal-dk);font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
   .conn{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(43,184,154,.5);animation:pulse 2.4s infinite}
@@ -44,7 +47,7 @@
   .crumb{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px;margin-bottom:6px}
   .crumb b{color:var(--ink2);font-weight:600}
   .crumb .sep{opacity:.6}
-  .phead h1{font-size:22px;font-weight:800}
+  .phead h1{font-size:22px;font-weight:700}
   .phead .sub{font-size:13px;color:var(--muted);margin-top:3px;max-width:560px}
   .phead-actions{display:flex;gap:9px;align-items:center}
 
@@ -52,10 +55,11 @@
   .market{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
   @media(max-width:860px){.market{grid-template-columns:repeat(2,1fr)}}
   .mcard{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:11px;box-shadow:var(--shadow)}
-  .mcard .ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
-  .mcard .ic.b{background:var(--blue-soft)} .mcard .ic.t{background:var(--teal-soft)} .mcard .ic.a{background:var(--amber-soft)}
+  .mcard .ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .mcard .ic svg{width:18px;height:18px}
+  .mcard .ic.b{background:var(--blue-soft);color:var(--blue)} .mcard .ic.t{background:var(--teal-soft);color:var(--teal-dk)} .mcard .ic.a{background:var(--amber-soft);color:var(--amber)} .mcard .ic.g{background:#eef1f5;color:var(--ink2)}
   .mcard .l{font-size:11px;color:var(--muted)}
-  .mcard .v{font-size:16.5px;font-weight:800;margin-top:0}
+  .mcard .v{font-size:16.5px;font-weight:700;margin-top:1px;letter-spacing:-.01em}
   .mcard .src{font-size:10px;color:var(--muted)}
 
   /* KPIs */
@@ -63,7 +67,7 @@
   @media(max-width:860px){.kpis{grid-template-columns:repeat(2,1fr)}}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 14px;box-shadow:var(--shadow)}
   .kpi .label{color:var(--muted);font-size:11.5px;font-weight:500}
-  .kpi .val{font-size:23px;font-weight:800;margin-top:3px;letter-spacing:-.03em}
+  .kpi .val{font-size:23px;font-weight:700;margin-top:3px;letter-spacing:-.03em}
   .kpi .val.red{color:var(--red)} .kpi .val.teal{color:var(--teal-dk)} .kpi .val.amber{color:var(--amber)} .kpi .val.blue{color:var(--blue)}
   .kpi .hint{color:var(--muted);font-size:11px;margin-top:3px;line-height:1.35}
 
@@ -94,9 +98,12 @@
   button.sm{padding:8px 13px;font-size:12.5px}
   .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
 
-  .panel-grid{display:grid;grid-template-columns:1fr 330px;gap:16px;align-items:start}
-  .panel-grid>div{min-width:0}
-  .sec-h{font-size:15px;font-weight:700;margin:2px 0 10px;display:flex;align-items:center;gap:9px}
+  /* Banda superior: gráfico + actividad */
+  .topgrid{display:grid;grid-template-columns:1fr 360px;gap:14px;align-items:stretch;margin-bottom:18px}
+  .topgrid>div{min-width:0;display:flex}
+  .topgrid>div>.card,.topgrid>div>.feedcard{flex:1;display:flex;flex-direction:column}
+  @media(max-width:980px){.topgrid{grid-template-columns:1fr}}
+  .sec-h{font-size:15px;font-weight:700;margin:2px 0 10px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
   .sec-h small{color:var(--muted);font-weight:400;font-size:12px}
 
   /* Toolbar tabla */
@@ -108,16 +115,17 @@
   .chip.active{border-color:var(--blue);background:var(--blue-soft);color:var(--blue-dk)}
   .chip .ct{display:inline-block;min-width:16px;text-align:center;margin-left:5px;font-size:10.5px;background:rgba(0,0,0,.06);border-radius:9px;padding:0 5px}
   .search{margin-left:auto;position:relative}
-  .search input{border:1.5px solid var(--line);border-radius:9px;padding:8px 12px 8px 30px;font-size:12.5px;font-family:inherit;width:190px;transition:border-color .15s var(--ease-out)}
+  .search input{border:1.5px solid var(--line);border-radius:9px;padding:8px 12px 8px 32px;font-size:12.5px;font-family:inherit;width:190px;transition:border-color .15s var(--ease-out)}
   .search input:focus{outline:none;border-color:var(--blue)}
-  .search::before{content:'🔎';position:absolute;left:9px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6}
+  .search .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink2);opacity:.7;pointer-events:none}
+  .search .si svg{width:14px;height:14px}
 
   /* Chart */
-  .chartcard{margin-bottom:18px}
   .chartcard h3{font-size:14px;font-weight:700}
-  .chartcard .leg{display:flex;gap:18px;font-size:12px;color:var(--ink2);margin:6px 0 8px}
+  .chartcard .leg{display:flex;gap:18px;font-size:12px;color:var(--ink2);margin:8px 0 4px;flex-wrap:wrap}
   .chartcard .leg span{display:flex;align-items:center;gap:7px}
-  .ldot{width:13px;height:3.5px;border-radius:2px;display:inline-block}
+  .ldot{width:14px;height:3px;border-radius:2px;display:inline-block}
+  .chartcard #chart{flex:1;display:flex;align-items:center;margin-top:8px}
 
   /* Table */
   .tablecard{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
@@ -154,18 +162,19 @@
   .footnote{color:var(--muted);font-size:11px;margin-top:14px;line-height:1.6}
 
   /* Feed */
-  .feedcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;box-shadow:var(--shadow);position:sticky;top:78px}
+  .feedcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px 6px;box-shadow:var(--shadow)}
   .feedcard h3{font-size:13.5px;font-weight:700;margin-bottom:2px}
-  .feedcard .desc{font-size:11px;color:var(--muted);margin-bottom:11px}
-  .feed{display:flex;flex-direction:column;gap:0;max-height:560px;overflow-y:auto}
-  .fitem{display:flex;gap:10px;font-size:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .feedcard .desc{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .feed{display:flex;flex-direction:column;gap:0;flex:1;min-height:0;max-height:290px;overflow-y:auto;margin-right:-6px;padding-right:6px}
+  .fitem{display:flex;gap:11px;font-size:12.5px;padding:10px 0;border-bottom:1px solid var(--line);animation:fin .35s var(--ease-out)}
   .fitem:last-child{border-bottom:none}
-  .fitem{animation:fin .35s var(--ease-out)}
   @keyframes fin{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-  .fic{flex:0 0 auto;width:25px;height:25px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px}
-  .fic.up{background:var(--teal-soft)} .fic.cal{background:var(--blue-soft)} .fic.warn{background:var(--amber-soft)}
+  .fic{flex:0 0 auto;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+  .fic svg{width:14px;height:14px;stroke-width:2.1}
+  .fic.up{background:var(--teal-soft);color:var(--teal-dk)} .fic.cal{background:var(--blue-soft);color:var(--blue)} .fic.warn{background:var(--amber-soft);color:var(--amber)}
+  .fitem .fx{min-width:0} .fitem .fx>div:first-child{line-height:1.45}
   .fitem .ft{color:var(--muted);font-size:10.5px;margin-top:2px}
-  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:34px 14px;line-height:1.6}
+  .empty{color:var(--muted);font-size:12.5px;text-align:center;padding:30px 14px;line-height:1.6}
 
   /* Modal */
   .overlay{position:fixed;inset:0;background:rgba(20,30,50,.45);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;opacity:0;transition:opacity .2s var(--ease-out)}
@@ -174,7 +183,7 @@
   .overlay.show .modal{transform:scale(1);opacity:1}
   .modal .close{float:right;background:none;color:var(--muted);font-size:24px;padding:0 6px;cursor:pointer;box-shadow:none}
   .modal .close:hover{background:none;color:var(--ink)}
-  .modal h2{font-size:18px;font-weight:800}
+  .modal h2{font-size:18px;font-weight:700}
   .modal .msub{color:var(--muted);font-size:12.5px;margin-top:2px}
   .explain{background:var(--blue-soft);border-radius:11px;padding:12px 14px;font-size:12.5px;color:var(--ink2);margin:16px 0;line-height:1.5}
 
@@ -186,13 +195,14 @@
   .marker{position:absolute;transform:translateX(-50%);font-size:10px;font-weight:700;white-space:nowrap}
   .marker.cur{color:var(--ink)} .marker.rec{color:var(--teal-dk)}
   .marker .tri{display:block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:7px solid currentColor;margin:0 auto 2px}
+  .marker.rec svg{width:13px;height:13px;display:block;margin:0 auto 1px}
   input[type=range]{width:100%;accent-color:var(--blue);height:6px;margin-top:6px}
-  .bigprice{font-size:32px;font-weight:800;text-align:center;letter-spacing:-.03em}
+  .bigprice{font-size:32px;font-weight:700;text-align:center;letter-spacing:-.03em}
   .bigprice small{font-size:13px;color:var(--muted);font-weight:500}
   .simgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:14px}
   .simbox{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px;text-align:center}
   .simbox .l{color:var(--muted);font-size:11px}
-  .simbox .v{font-size:21px;font-weight:800;margin-top:3px;letter-spacing:-.02em}
+  .simbox .v{font-size:21px;font-weight:700;margin-top:3px;letter-spacing:-.02em}
   .verdict{margin-top:14px;padding:13px 15px;border-radius:11px;font-size:13px;line-height:1.5}
   .verdict.teal{background:var(--teal-soft);color:#15705c} .verdict.amber{background:var(--amber-soft);color:#8a6400} .verdict.red{background:var(--red-soft);color:#bb343a}
   .recbtn{margin-top:14px;width:100%;background:var(--teal)}
@@ -204,7 +214,7 @@
   details.bd[open] summary::before{content:'▾ '}
   .brow{display:flex;justify-content:space-between;padding:9px 14px;font-size:12.5px;border-top:1px solid var(--line)}
   .brow.minus span:last-child{color:var(--red)}
-  .brow.total{background:#fbfcfd;font-weight:800}
+  .brow.total{background:#fbfcfd;font-weight:700}
   .ranking{margin-top:13px;font-size:12px;color:var(--muted)}
   .ranking .me{color:var(--blue);font-weight:700}
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:13px 22px;border-radius:11px;font-size:13px;font-weight:600;z-index:99;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:90vw;animation:tin .3s var(--ease-out)}
@@ -232,8 +242,8 @@
       <div class="sub">Cuánto te queda de verdad en cada venta y cómo el sistema ajusta tus precios cuando suben los costos.</div>
     </div>
     <div class="phead-actions">
-      <button class="ghost sm" onclick="simularMes()">Ver el mes que viene →</button>
-      <button class="teal sm" onclick="indexarAhora()">Ajustar precios ahora</button>
+      <button class="ghost sm" onclick="resetAll()">Reiniciar</button>
+      <button class="teal sm" onclick="simularMes()">Simular el mes que viene →</button>
     </div>
   </div>
 
@@ -252,10 +262,6 @@
         <div class="mode" data-mode="sugerido" onclick="setMode('sugerido')">Te sugiero<small>vos aprobás</small></div>
         <div class="mode" data-mode="manual" onclick="setMode('manual')">Manual<small>no toco nada</small></div>
       </div>
-      <div class="btnrow">
-        <button onclick="simularMes()">Ver cómo sigue el mes que viene →</button>
-        <button class="ghost" onclick="resetAll()">Reiniciar</button>
-      </div>
     </div>
     <div class="card">
       <h3>Protección contra la suba de costos</h3>
@@ -273,19 +279,30 @@
     </div>
   </div>
 
-  <div class="panel-grid">
+  <!-- Banda: gráfico + actividad -->
+  <div class="topgrid">
     <div>
-      <!-- Chart -->
       <div class="card chartcard">
         <h3>Tu ganancia mes a mes</h3>
         <div class="leg">
-          <span><span class="ldot" style="background:var(--teal)"></span>Con Real Trends Profit (la cuidamos)</span>
-          <span><span class="ldot" style="background:var(--red)"></span>Si no hacés nada (la inflación te la come)</span>
+          <span><span class="ldot" style="background:var(--teal)"></span>Con Real Trends Profit</span>
+          <span><span class="ldot" style="background:var(--red)"></span>Si no ajustás los precios</span>
         </div>
         <div id="chart"></div>
       </div>
+    </div>
+    <div>
+      <div class="feedcard">
+        <h3>Qué fue haciendo el sistema</h3>
+        <div class="desc">Cada cambio queda registrado, con su motivo.</div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </div>
 
-      <div class="sec-h">Cuánto ganás de verdad en cada producto <small>· tocá un producto para ver a qué precio conviene venderlo</small></div>
+  <!-- Tabla de productos -->
+  <div class="tablewrap">
+      <div class="sec-h">Cuánto ganás de verdad en cada producto <small>tocá un producto para ver a qué precio conviene venderlo</small></div>
       <div class="tbar">
         <div class="chips" id="chips">
           <div class="chip active" data-f="todos" onclick="setFilter('todos')">Todos<span class="ct" id="c-todos">0</span></div>
@@ -294,7 +311,7 @@
           <div class="chip" data-f="red" onclick="setFilter('red')">Perdiendo<span class="ct" id="c-red">0</span></div>
         </div>
         <button class="teal sm" onclick="arreglarTodos()">Arreglar los que pierden</button>
-        <div class="search"><input id="buscar" type="text" placeholder="Buscar producto…" oninput="render()"></div>
+        <div class="search"><span class="si" id="searchIcon"></span><input id="buscar" type="text" placeholder="Buscar producto…" oninput="render()"></div>
       </div>
       <div class="tablecard"><div class="tscroll">
         <table>
@@ -316,15 +333,6 @@
         </table>
       </div></div>
       <p class="footnote">Lo que te queda = Precio − Comisión de Mercado Libre − Envío − Costo de las cuotas sin interés − Impuestos − Lo que te cuesta el producto. Datos de ejemplo para la demo.</p>
-    </div>
-
-    <div>
-      <div class="feedcard">
-        <h3>Qué fue haciendo el sistema</h3>
-        <div class="desc">Cada cambio queda registrado, con el motivo.</div>
-        <div class="feed" id="feed"></div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -353,6 +361,20 @@ const GANA_MIN = 12, GANA_OBJ = 22;   // % de ganancia: mínimo aceptable y obje
 function clone(x){return JSON.parse(JSON.stringify(x));}
 const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
 const cuotasPctMap = {0:0,3:4.5,6:8.5,12:14};
+
+// ---------- Iconos (SVG limpios, sin emojis) ----------
+const _svg = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC = {
+  trend:_svg('<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>'),
+  dollar:_svg('<line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'),
+  store:_svg('<path d="M3 9 4.5 4h15L21 9"/><path d="M4 9v10a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9"/><path d="M3.5 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0"/>'),
+  calendar:_svg('<rect x="3" y="4.5" width="18" height="17" rx="2.5"/><line x1="16" y1="2.5" x2="16" y2="6.5"/><line x1="8" y1="2.5" x2="8" y2="6.5"/><line x1="3" y1="9.5" x2="21" y2="9.5"/>'),
+  search:_svg('<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>'),
+  arrowUp:_svg('<line x1="12" y1="20" x2="12" y2="5"/><polyline points="5.5 11.5 12 5 18.5 11.5"/>'),
+  check:_svg('<polyline points="20 6.5 9.5 17.5 4.5 12.5"/>'),
+  alert:_svg('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16.9a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><line x1="12" y1="9" x2="12" y2="13.5"/><line x1="12" y1="17.2" x2="12.01" y2="17.2"/>'),
+  star:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.5l2.7 5.9 6.4.7-4.8 4.3 1.3 6.3L12 16.9 6.4 19.9l1.3-6.3L2.9 9.1l6.4-.7L12 2.5z"/></svg>'
+};
 
 function costoARS(p){ return p.moneda==='USD' ? p.costo * MK.dolar[document.getElementById('dolarSel').value] : p.costo; }
 
@@ -403,10 +425,10 @@ function accion(p,c){
 function renderMarket(){
   const d=MK.dolar[document.getElementById('dolarSel').value];
   document.getElementById('market').innerHTML=`
-    <div class="mcard"><div class="ic a">📈</div><div><div class="l">Los costos subieron este mes</div><div class="v">${MK.inflacion.toFixed(1)}%</div><div class="src">según el INDEC</div></div></div>
-    <div class="mcard"><div class="ic b">💵</div><div><div class="l">Dólar hoy</div><div class="v">${fmt(d)}</div><div class="src">se usa para productos importados</div></div></div>
-    <div class="mcard"><div class="ic t">🛒</div><div><div class="l">Comisiones de Mercado Libre</div><div class="v">Al día</div><div class="src">se actualizan solas</div></div></div>
-    <div class="mcard"><div class="ic t">📅</div><div><div class="l">Mes</div><div class="v">${MK.meses[MK.mesIdx]}</div><div class="src">${MK.mesIdx} ajustes hechos</div></div></div>`;
+    <div class="mcard"><div class="ic a">${IC.trend}</div><div><div class="l">Los costos subieron este mes</div><div class="v">${MK.inflacion.toFixed(1)}%</div><div class="src">según el INDEC</div></div></div>
+    <div class="mcard"><div class="ic b">${IC.dollar}</div><div><div class="l">Dólar hoy</div><div class="v">${fmt(d)}</div><div class="src">se usa para productos importados</div></div></div>
+    <div class="mcard"><div class="ic t">${IC.store}</div><div><div class="l">Comisiones de Mercado Libre</div><div class="v">Al día</div><div class="src">se actualizan solas</div></div></div>
+    <div class="mcard"><div class="ic g">${IC.calendar}</div><div><div class="l">Mes</div><div class="v">${MK.meses[MK.mesIdx]}</div><div class="src">${MK.mesIdx} ajustes hechos</div></div></div>`;
 }
 
 function avg(set){ return set.reduce((a,p)=>a+calc(p).pct,0)/set.length; }
@@ -478,12 +500,12 @@ function render(flash){
 
 function renderFeed(){
   const f=document.getElementById('feed');
-  if(!FEED.length){ f.innerHTML='<div class="empty">El sistema está vigilando tus precios.<br>Tocá <b>“Ajustar precios ahora”</b> o <b>“el mes que viene”</b> para verlo en acción.</div>'; return; }
-  f.innerHTML=FEED.slice(0,40).map(e=>`<div class="fitem"><div class="fic ${e.ic}">${e.emoji}</div><div><div>${e.text}</div><div class="ft">${e.time}</div></div></div>`).join('');
+  if(!FEED.length){ f.innerHTML='<div class="empty">El sistema está vigilando tus precios.<br>Tocá <b>“Ajustar precios ahora”</b> o <b>“Simular el mes que viene”</b> para verlo en acción.</div>'; return; }
+  f.innerHTML=FEED.slice(0,40).map(e=>`<div class="fitem"><div class="fic ${e.ic}">${IC[e.icon]||''}</div><div class="fx"><div>${e.text}</div><div class="ft">${e.time}</div></div></div>`).join('');
 }
-function pushFeed(ic,emoji,text){
+function pushFeed(ic,icon,text){
   const t=new Date();
-  FEED.unshift({ic,emoji,text,time:`${MK.meses[MK.mesIdx]} · ${t.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}`});
+  FEED.unshift({ic,icon,text,time:`${MK.meses[MK.mesIdx]} · ${t.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}`});
 }
 
 // ---------- Gráfico ----------
@@ -527,7 +549,7 @@ function ajustar(infl,registrar){
     if(registrar && nuevo!==p.precio){
       const t = MODE==='auto'?`Subí <b>${p.nombre}</b> de ${fmt(p.precio)} a ${fmt(nuevo)} para que no pierdas ganancia.`
                              :`Te sugiero subir <b>${p.nombre}</b> a ${fmt(nuevo)} (hoy está ${fmt(p.precio)}).`;
-      pushFeed('up','↑',t); flashed.push(p.sku);
+      pushFeed('up','arrowUp',t); flashed.push(p.sku);
     }
     if(MODE!=='sugerido') p.precio=nuevo;
   });
@@ -537,7 +559,7 @@ function ajustar(infl,registrar){
 function indexarAhora(){
   const infl=parseFloat(document.getElementById('ipc').value)||0;
   const fl=ajustar(infl,true);
-  pushFeed('cal','✓',`Revisé todo el catálogo y ajusté los precios por la suba de costos de este mes (${infl}%).`);
+  pushFeed('cal','check',`Revisé todo el catálogo y ajusté los precios por la suba de costos de este mes (${infl}%).`);
   render(fl); toast(`Precios ajustados. Tu ganancia quedó protegida.`);
 }
 function simularMes(){
@@ -545,9 +567,9 @@ function simularMes(){
   MK.mesIdx++;
   MK.dolar.oficial=Math.round(MK.dolar.oficial*1.025); MK.dolar.mep=Math.round(MK.dolar.mep*1.022); MK.dolar.blue=Math.round(MK.dolar.blue*1.018);
   const infl=parseFloat(document.getElementById('ipc').value)||MK.inflacion;
-  pushFeed('cal','📅',`Llegó <b>${MK.meses[MK.mesIdx]}</b>. Lo que te cuestan los productos subió ${infl}% y el dólar también.`);
+  pushFeed('cal','calendar',`Llegó <b>${MK.meses[MK.mesIdx]}</b>. Lo que te cuestan los productos subió ${infl}% y el dólar también.`);
   const fl=ajustar(infl,true);
-  if(MODE==='manual') pushFeed('warn','!','Estás en Manual: no toqué los precios, así que tu ganancia bajó con la inflación.');
+  if(MODE==='manual') pushFeed('warn','alert','Estás en Manual: no toqué los precios, así que tu ganancia bajó con la inflación.');
   HISTORY.push({mes:MK.meses[MK.mesIdx].slice(0,3),real:avg(DATA),nom:avg(SHADOW)});
   renderMarket(); render(fl);
   toast(MODE==='manual'?`Mirá cómo cae tu ganancia cuando no ajustás nada.`:`${MK.meses[MK.mesIdx]}: el sistema defendió tu ganancia solo.`);
@@ -558,11 +580,11 @@ function arreglarTodos(){
     const c=calc(p);
     if(c.estado!=='teal'){
       const rec=recomendado(p);
-      if(rec.precio!==p.precio){ pushFeed('up','↑',`Subí <b>${p.nombre}</b> de ${fmt(p.precio)} a ${fmt(rec.precio)} para que deje de perder ganancia.`); p.precio=rec.precio; flashed.push(p.sku); n++; }
+      if(rec.precio!==p.precio){ pushFeed('up','arrowUp',`Subí <b>${p.nombre}</b> de ${fmt(p.precio)} a ${fmt(rec.precio)} para que deje de perder ganancia.`); p.precio=rec.precio; flashed.push(p.sku); n++; }
     }
   });
-  if(!n){ toast('Todos tus productos ya tienen buena ganancia 👌'); return; }
-  pushFeed('cal','✓',`Ajusté ${n} producto${n>1?'s':''} que estaba${n>1?'n':''} perdiendo o ganando poco.`);
+  if(!n){ toast('Todos tus productos ya tienen buena ganancia.'); return; }
+  pushFeed('cal','check',`Ajusté ${n} producto${n>1?'s':''} que estaba${n>1?'n':''} perdiendo o ganando poco.`);
   render(flashed); toast(`Listo: arreglé ${n} producto${n>1?'s':''}.`);
 }
 function resetAll(){ DATA=clone(SEED);SHADOW=clone(SEED);MK=clone(MK0);HISTORY=[];FEED=[];FILTER='todos';SORT={k:null,asc:false}; const b=document.getElementById('buscar'); if(b)b.value=''; document.querySelectorAll('.chip').forEach(el=>el.classList.toggle('active',el.dataset.f==='todos')); renderMarket();render(); toast('Demo reiniciada.'); }
@@ -576,7 +598,7 @@ function openSim(i){
     <button class="close" onclick="closeSim()">×</button>
     <h2>${p.nombre}</h2>
     <div class="msub">${p.cat} · te cuesta ${fmt(calc(p).cProd)}${p.moneda==='USD'?' (importado)':''}</div>
-    <div class="explain">Movés el precio y mirás dos cosas: <b>cuánto te queda de ganancia</b> y <b>qué lugar ocupás</b> entre los que venden lo mismo. Bajar el precio te sube en la lista pero te deja menos ganancia. El punto justo lo marcamos con la estrella ⭐.</div>
+    <div class="explain">Movés el precio y mirás dos cosas: <b>cuánto te queda de ganancia</b> y <b>qué lugar ocupás</b> entre los que venden lo mismo. Bajar el precio te sube en la lista pero te deja menos ganancia. El punto justo lo marcamos como <b>recomendado</b>.</div>
     <div class="bigprice"><span id="simPrice"></span> <small id="simPos"></small></div>
     <div class="zonewrap">
       <div class="zonebar" id="zonebar"></div>
@@ -603,7 +625,7 @@ function closeSim(){ document.getElementById('overlay').classList.remove('show')
 function aplicarPrecioVal(nuevo,texto){
   const p=DATA[simIndex]; const ant=p.precio; if(nuevo===ant){ closeSim(); return; }
   p.precio=nuevo;
-  pushFeed('up','✓',texto.replace('{n}',p.nombre).replace('{a}',fmt(ant)).replace('{p}',fmt(nuevo)));
+  pushFeed('up','check',texto.replace('{n}',p.nombre).replace('{a}',fmt(ant)).replace('{p}',fmt(nuevo)));
   closeSim(); render([p.sku]); toast(`Listo: <b>${p.nombre}</b> quedó en ${fmt(nuevo)}.`);
 }
 function aplicarPrecio(){ aplicarPrecioVal(parseInt(document.getElementById('simSlider').value),'Cambiaste el precio de <b>{n}</b> de {a} a {p}.'); }
@@ -629,12 +651,12 @@ function updateSim(){
   const curP=pos(p.precio), recP=pos(rec.precio);
   document.getElementById('markers').innerHTML=`
     <div class="marker cur" style="left:${curP}%"><span class="tri"></span>vos</div>
-    <div class="marker rec" style="left:${recP}%;top:0">⭐</div>`;
+    <div class="marker rec" style="left:${recP}%;top:0">${IC.star}recomendado</div>`;
 
   let cls,txt;
   if(c.pct<0){ cls='red'; txt=`<b>Cuidado:</b> a ${fmt(p.precio)} estás <b>vendiendo a pérdida</b>. Quedás bien arriba en la lista, pero perdés ${fmt(-c.queda)} en cada venta. No conviene.`; }
   else if(c.pct<GANA_MIN){ cls='amber'; txt=`A ${fmt(p.precio)} ganás muy poco (${c.pct.toFixed(0)}%). Sí, estás ${r.pos}° más barato, pero casi no te queda nada. Te conviene subirlo un poco.`; }
-  else if(p.precio>rec.precio+200){ cls='amber'; txt=`Ganás bien (${c.pct.toFixed(0)}%), pero a ${fmt(p.precio)} quedás ${r.pos}° y podés estar perdiendo ventas por caro. La estrella marca un precio más competitivo que también te deja buena ganancia.`; }
+  else if(p.precio>rec.precio+200){ cls='amber'; txt=`Ganás bien (${c.pct.toFixed(0)}%), pero a ${fmt(p.precio)} quedás ${r.pos}° y podés estar perdiendo ventas por caro. El precio recomendado es más competitivo y también te deja buena ganancia.`; }
   else{ cls='teal'; txt=`<b>Buen precio.</b> Te queda ${fmt(c.queda)} (${c.pct.toFixed(0)}%) y seguís ${r.pos}° más barato. Acá es donde el sistema dejaría tu publicación.`; }
   document.getElementById('simVerdict').innerHTML=`<div class="verdict ${cls}">${txt}</div>`;
 
@@ -656,6 +678,7 @@ document.getElementById('overlay').addEventListener('click',e=>{if(e.target.id==
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSim();});
 document.getElementById('dolarSel').addEventListener('change',()=>{renderMarket();render();});
 
+document.getElementById('searchIcon').innerHTML = IC.search;
 renderMarket(); render();
 </script>
 </body>
