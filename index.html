@@ -58,6 +58,21 @@
   .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(43,184,154,.5);animation:pulse 2.4s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(43,184,154,.5)}70%{box-shadow:0 0 0 6px rgba(43,184,154,0)}100%{box-shadow:0 0 0 0 rgba(43,184,154,0)}}
 
+  /* Ticker macro — debajo del topbar */
+  .ticker-bar{background:var(--panel);border-bottom:1px solid var(--line);height:30px;position:sticky;top:62px;z-index:29;display:flex;align-items:stretch;overflow:hidden}
+  .tick-badge{display:flex;align-items:center;gap:8px;padding:0 16px;border-right:1px solid var(--line);flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:var(--ink2);white-space:nowrap;background:var(--panel)}
+  .tick-badge .dot{flex:0 0 auto}
+  .ticker-clip{flex:1;overflow:hidden;height:30px}
+  .ticker-track{display:flex;flex-wrap:nowrap;animation:tickerMove 30s linear infinite}
+  @media(hover:hover) and (pointer:fine){.ticker-track:hover{animation-play-state:paused}}
+  @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ticker-inner{display:inline-flex;align-items:center;height:30px;flex:0 0 auto}
+  .tick-item{display:inline-flex;align-items:center;gap:7px;padding:0 22px;height:30px;white-space:nowrap;border-right:1px solid var(--line)}
+  .tick-label{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+  .tick-val{font-weight:700;font-variant-numeric:tabular-nums;font-size:12.5px;color:var(--ink)}
+  .tick-val.blue{color:var(--blue)} .tick-val.amber{color:var(--amber)} .tick-val.teal{color:var(--teal-dk)}
+  @media(max-width:600px){.tick-badge span:last-child{display:none}}
+
   .wrap{max-width:1280px;margin:0 auto;padding:18px 28px}
 
   /* Page header (módulo embebido) */
@@ -164,7 +179,7 @@
   table{width:100%;border-collapse:collapse;font-size:12.5px}
   th,td{padding:9px 12px;text-align:right;white-space:nowrap}
   th:first-child,td:first-child{text-align:left}
-  thead th{background:#fbfcfd;color:var(--muted);font-weight:600;font-size:11px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:1}
+  thead th{background:#fbfcfd;color:var(--muted);font-weight:600;font-size:11px;border-bottom:1px solid var(--line);position:sticky;top:92px;z-index:2}
   thead th.sortable{cursor:pointer;user-select:none}
   thead th.sortable:hover{color:var(--ink2)}
   thead th.sortable.sorted::after{content:' ▾';color:var(--blue)}
@@ -274,6 +289,16 @@
     <div class="module"><span class="name">Profit</span><span class="tag">Rentabilidad inteligente</span></div>
   </div>
   <div class="conn"><span class="dot"></span><span class="conn-full">Tu cuenta de Mercado Libre está conectada · actualizado recién</span><span class="conn-short">Conectado · actualizado recién</span></div>
+</div>
+
+<div class="ticker-bar">
+  <div class="tick-badge"><span class="dot"></span><span>MERCADO</span></div>
+  <div class="ticker-clip">
+    <div class="ticker-track" id="tickerTrack">
+      <div class="ticker-inner" id="tickerA"></div>
+      <div class="ticker-inner" id="tickerB" aria-hidden="true"></div>
+    </div>
+  </div>
 </div>
 
 <div class="wrap">
@@ -469,6 +494,34 @@ function accion(p,c){
 }
 
 // ---------- Render ----------
+// ---------- Ticker ----------
+let _tickerDurSet=false;
+function renderTicker(){
+  const comisions=DATA.map(p=>p.comisionPct), iibbs=DATA.map(p=>p.iibb);
+  const minC=Math.min(...comisions), maxC=Math.max(...comisions);
+  const minI=Math.min(...iibbs), maxI=Math.max(...iibbs);
+  const items=[
+    {l:'IPC este mes',  v:`+${MK.inflacion.toFixed(1)}%`,           cls:'amber'},
+    {l:'Dólar Oficial', v:fmt(MK.dolar.oficial),                    cls:'blue'},
+    {l:'Dólar MEP',     v:fmt(MK.dolar.mep),                        cls:'blue'},
+    {l:'Dólar Blue',    v:fmt(MK.dolar.blue),                       cls:'blue'},
+    {l:'Comisión ML',   v:`${minC}% – ${maxC}%`,                    cls:''},
+    {l:'IIBB',          v:`${minI}% – ${maxI}%`,                    cls:''},
+    {l:'Mes actual',    v:MK.meses[MK.mesIdx],                      cls:''},
+    {l:'Margen mínimo', v:`${GANA_MIN}%`,                           cls:''},
+    {l:'Margen objetivo',v:`${GANA_OBJ}%`,                          cls:'teal'},
+  ];
+  const html=items.map(({l,v,cls})=>`<span class="tick-item"><span class="tick-label">${l}</span><span class="tick-val ${cls}">${v}</span></span>`).join('');
+  document.querySelectorAll('.ticker-inner').forEach(el=>el.innerHTML=html);
+  // Velocidad calibrada al contenido (una sola vez para evitar restart del loop)
+  if(!_tickerDurSet){ requestAnimationFrame(()=>{
+    const inner=document.getElementById('tickerA');
+    if(!inner||!inner.scrollWidth)return;
+    document.getElementById('tickerTrack').style.animationDuration=Math.max(18,Math.round(inner.scrollWidth/58))+'s';
+    _tickerDurSet=true;
+  }); }
+}
+
 function renderMarket(){
   const d=MK.dolar[document.getElementById('dolarSel').value];
   document.getElementById('market').innerHTML=`
@@ -476,6 +529,7 @@ function renderMarket(){
     <div class="mcard"><div class="ic b">${IC.dollar}</div><div><div class="l">Dólar hoy</div><div class="v">${fmt(d)}</div><div class="src">se usa para productos importados</div></div></div>
     <div class="mcard"><div class="ic t">${IC.store}</div><div><div class="l">Comisiones de Mercado Libre</div><div class="v">Al día</div><div class="src">se actualizan solas</div></div></div>
     <div class="mcard"><div class="ic g">${IC.calendar}</div><div><div class="l">Mes</div><div class="v">${MK.meses[MK.mesIdx]}</div><div class="src">${MK.mesIdx} ajustes hechos</div></div></div>`;
+  renderTicker();
 }
 
 function avg(set){ return set.reduce((a,p)=>a+calc(p).pct,0)/set.length; }
