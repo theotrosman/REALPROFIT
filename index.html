@@ -26,6 +26,8 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-tap-highlight-color:transparent}
   ::selection{background:rgba(0,101,243,.16);color:var(--ink)}
+  input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+  input[type=number]{-moz-appearance:textfield}
   body{font-family:'Proxima Nova',-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;padding-bottom:40px}
   /* Scrollbars finos y discretos */
   .feed,.tscroll,.modal{scrollbar-width:thin;scrollbar-color:#cdd5e0 transparent}
@@ -159,7 +161,7 @@
   .chip.active{border-color:var(--blue);background:var(--blue-soft);color:var(--blue-dk)}
   .chip .ct{display:inline-block;min-width:16px;text-align:center;margin-left:5px;font-size:10.5px;background:rgba(0,0,0,.06);border-radius:9px;padding:0 5px}
   .search{margin-left:auto;position:relative}
-  .search input{border:1.5px solid var(--line);border-radius:var(--r-ctl);padding:8px 12px 8px 32px;font-size:12.5px;font-family:inherit;width:190px;transition:border-color .15s var(--ease-out),box-shadow .15s var(--ease-out)}
+  .search input{background:#fff;color:var(--ink);border:1.5px solid var(--line);border-radius:var(--r-ctl);padding:8px 12px 8px 32px;font-size:12.5px;font-family:inherit;width:190px;transition:border-color .15s var(--ease-out),box-shadow .15s var(--ease-out)}
   .search input:focus{outline:none;border-color:var(--blue);box-shadow:var(--focus)}
   .search .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--ink2);opacity:.7;pointer-events:none}
   .search .si svg{width:14px;height:14px}
@@ -263,10 +265,9 @@
   .simbox .v{font-size:21px;font-weight:700;margin-top:3px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
   .verdict{margin-top:14px;padding:13px 15px;border-radius:var(--r);font-size:13px;line-height:1.5}
   .verdict.teal{background:var(--teal-soft);color:#15705c} .verdict.amber{background:var(--amber-soft);color:#8a6400} .verdict.red{background:var(--red-soft);color:#bb343a}
-  .recbtn{margin-top:14px;width:100%;background:var(--teal)}
-  .recbtn:hover{background:var(--teal-dk)}
   details.bd{margin-top:16px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-  details.bd summary{padding:11px 14px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2);background:#fbfcfd;list-style:none}
+  details.bd summary{padding:11px 14px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink2);background:#fbfcfd;list-style:none;transition:background .13s var(--ease-out)}
+  @media(hover:hover) and (pointer:fine){details.bd summary:hover{background:#f1f4f8}}
   details.bd summary::-webkit-details-marker{display:none}
   details.bd summary::before{content:'▸ ';color:var(--muted)}
   details.bd[open] summary::before{content:'▾ '}
@@ -595,7 +596,7 @@ function render(flash){
     <div class="kpi"><div class="label">Ganás en promedio</div><div class="val ${prom<GANA_MIN?'amber':'teal'}">${prom.toFixed(0)}%</div><div class="hint">de cada venta, ya con todo descontado</div></div>
     <div class="kpi"><div class="label">Te queda por venta (todos juntos)</div><div class="val ${totalQueda<0?'red':''}">${fmt(totalQueda)}</div><div class="hint">sumando una unidad de cada uno</div></div>
     <div class="kpi"><div class="label">Necesitan tu atención</div><div class="val ${rojo?'red':amar?'amber':'teal'}">${rojo+amar}</div><div class="hint">${rojo} perdiendo · ${amar} ganando poco</div></div>
-    <div class="kpi"><div class="label">Ganancia que evitás perder</div><div class="val blue">+${salvado.toFixed(0)} pts</div><div class="hint">frente a no ajustar nada</div></div>`;
+    <div class="kpi"><div class="label">Ganancia que evitás perder</div><div class="val ${salvado>0?'teal':''}">+${salvado.toFixed(0)} pts</div><div class="hint">frente a no ajustar nada</div></div>`;
   renderFeed(); drawChart();
 }
 
