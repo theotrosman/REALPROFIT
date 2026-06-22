@@ -280,6 +280,101 @@
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .recbtnrow{display:flex;gap:9px;margin-top:14px}
   .recbtnrow button{flex:1}
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto;scrollbar-width:none;background:transparent}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab-btn{background:none;border:none;color:var(--muted);padding:10px 16px;font-size:13.5px;font-weight:600;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;box-shadow:none;border-radius:0;white-space:nowrap;transition:color .15s var(--ease-out),border-color .15s var(--ease-out)}
+  @media(hover:hover) and (pointer:fine){.tab-btn:hover{color:var(--ink2);background:none}}
+  .tab-btn:focus-visible{outline:none;color:var(--blue);box-shadow:var(--focus);border-radius:6px}
+  .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:none}
+  .tab-btn .ct{background:var(--blue-soft);color:var(--blue);font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:9px;margin-left:6px}
+  .tab-pane{display:none}
+  .tab-pane.active{display:block;animation:introUp .28s var(--ease-out) both}
+
+  /* ---------- CRM Compradores ---------- */
+  .crm-grid{display:grid;grid-template-columns:1fr 360px;gap:14px;align-items:start;margin-bottom:14px}
+  @media(max-width:980px){.crm-grid{grid-template-columns:1fr}}
+  .crm-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+  .crm-card .crm-head{padding:14px 16px 8px}
+  .crm-card .crm-head h3{font-size:14px;font-weight:700;margin-bottom:2px}
+  .crm-card .crm-head .desc{font-size:11.5px;color:var(--muted)}
+  .crm-tbar{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 12px}
+  .crm-tbody tr{cursor:pointer;border-bottom:1px solid var(--line);transition:background .12s var(--ease-out)}
+  .crm-tbody tr:last-child{border-bottom:none}
+  @media(hover:hover) and (pointer:fine){.crm-tbody tr:hover{background:#f8fafc}}
+  .crm-tbody tr.selected{background:var(--blue-soft)}
+  .crm-pill{display:inline-block;font-size:10px;padding:2px 7px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted);font-weight:600}
+  .crm-pill.rec{background:var(--teal-soft);color:var(--teal-dk);border-color:#bce4d9}
+  .crm-pill.uni{background:#eef1f5;color:var(--ink2);border-color:#dde2e9}
+  .crm-pill.loy{background:var(--blue-soft);color:var(--blue);border-color:#bcd9ff}
+  .crm-detail{position:sticky;top:108px}
+  .crm-detail .crm-empty{text-align:center;color:var(--muted);padding:40px 18px;font-size:12.5px;line-height:1.6}
+  .crm-detail .crm-empty svg{width:32px;height:32px;margin-bottom:8px;opacity:.5}
+  .crm-detail h4{font-size:15px;font-weight:700;margin:0 0 1px;padding:14px 16px 0}
+  .crm-detail .crm-sub{font-size:11.5px;color:var(--muted);padding:0 16px 12px}
+  .crm-detail .crm-row{display:flex;justify-content:space-between;padding:8px 16px;font-size:12.5px;border-top:1px solid var(--line)}
+  .crm-detail .crm-row b{font-weight:700;font-variant-numeric:tabular-nums}
+  .crm-detail .crm-section-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:14px 16px 6px;border-top:1px solid var(--line);background:#fbfcfd}
+  .crm-detail .crm-prod{display:flex;justify-content:space-between;padding:7px 16px;font-size:12px;border-top:1px solid var(--line)}
+  .crm-detail .crm-prod small{color:var(--muted);display:block;font-size:10.5px;margin-top:1px}
+  .crm-detail .crm-prod .crm-retbadge{font-size:10px;padding:1px 6px;border-radius:5px;background:var(--red-soft);color:#bb343a;font-weight:700;margin-left:5px}
+  .crm-detail .crm-ctx{padding:11px 16px;font-size:12px;color:var(--ink2);border-top:1px solid var(--line);background:var(--blue-soft);line-height:1.5}
+  .crm-detail .crm-ctx b{color:var(--blue-dk)}
+
+  /* ---------- Proyecciones ---------- */
+  .proj-grid{display:grid;grid-template-columns:340px 1fr;gap:14px;margin-bottom:14px;align-items:start}
+  @media(max-width:980px){.proj-grid{grid-template-columns:1fr}}
+  .slider-row{margin-bottom:13px}
+  .slider-row:last-child{margin-bottom:0}
+  .slider-row .sl-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink2);font-weight:600}
+  .slider-row .sl-top .sl-val{font-variant-numeric:tabular-nums;color:var(--blue);font-weight:700;font-size:13px}
+  .slider-row .sl-hint{font-size:10.5px;color:var(--muted);margin-top:-2px;font-weight:500}
+  .scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:640px){.scenarios{grid-template-columns:1fr}}
+  .scn{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .scn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+  .scn.opt::before{background:var(--teal)} .scn.real::before{background:var(--blue)} .scn.pes::before{background:var(--red)}
+  .scn h5{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+  .scn.opt h5{color:var(--teal-dk)} .scn.real h5{color:var(--blue)} .scn.pes h5{color:var(--red)}
+  .scn .v{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+  .scn .v.neg{color:var(--red)}
+  .scn .row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink2);margin-top:7px;padding-top:6px;border-top:1px solid var(--line)}
+  .scn .row b{font-weight:700;font-variant-numeric:tabular-nums}
+  .semaforo{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:var(--r);margin-top:14px;font-size:13px;font-weight:600;line-height:1.45}
+  .semaforo.green{background:var(--teal-soft);color:#15705c}
+  .semaforo.yellow{background:var(--amber-soft);color:#8a6400}
+  .semaforo.red{background:var(--red-soft);color:#bb343a}
+  .semaforo .light{width:14px;height:14px;border-radius:50%;flex:0 0 auto;box-shadow:0 0 0 3px rgba(255,255,255,.6) inset}
+  .semaforo.green .light{background:var(--teal)}
+  .semaforo.yellow .light{background:var(--amber)}
+  .semaforo.red .light{background:var(--red)}
+  .proj-compare{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-top:14px;box-shadow:var(--shadow)}
+  .proj-compare h4{font-size:13px;font-weight:700;margin-bottom:3px}
+  .proj-compare .desc{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .proj-cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:640px){.proj-cmp-grid{grid-template-columns:1fr}}
+  .cmp-box{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px}
+  .cmp-box.good{background:var(--teal-soft);border-color:#bce4d9}
+  .cmp-box.bad{background:var(--red-soft);border-color:#f6c4c6}
+  .cmp-box .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .cmp-box.good .l{color:var(--teal-dk)} .cmp-box.bad .l{color:#a82c33}
+  .cmp-box .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-top:3px}
+  .cmp-box .sub{font-size:11.5px;color:var(--ink2);margin-top:4px}
+
+  /* ---------- Devoluciones ---------- */
+  .ret-alert{background:var(--red-soft);border:1px solid #f6c4c6;border-radius:var(--r);padding:11px 13px;font-size:12.5px;color:#a82c33;margin-bottom:12px;display:flex;gap:9px;align-items:flex-start;line-height:1.5}
+  .ret-alert svg{flex:0 0 auto;width:16px;height:16px;margin-top:1px}
+  .ret-alert b{color:#9a2229}
+  .ret-tip{font-size:11.5px;color:var(--blue-dk);background:var(--blue-soft);padding:5px 9px;border-radius:7px;display:inline-flex;align-items:center;gap:6px;line-height:1.35}
+  .ret-tip svg{width:12px;height:12px;flex:0 0 auto}
+  .ret-rate-bar{position:relative;height:6px;background:var(--line);border-radius:6px;overflow:hidden;width:80px;display:inline-block;vertical-align:middle;margin-left:6px}
+  .ret-rate-bar .f{position:absolute;left:0;top:0;bottom:0;border-radius:6px}
+  .ret-rate-bar .f.t{background:var(--teal)}
+  .ret-rate-bar .f.a{background:var(--amber)}
+  .ret-rate-bar .f.r{background:var(--red)}
+  td.ret-rate{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  td.ret-rate.t{color:var(--teal-dk)} td.ret-rate.a{color:#9a7000} td.ret-rate.r{color:var(--red)}
 </style>
 </head>
 <body>
@@ -314,6 +409,16 @@
       <button class="ghost sm" onclick="resetAll()">Reiniciar demo</button>
     </div>
   </div>
+
+  <!-- Navegación de secciones -->
+  <nav class="tabs" role="tablist" aria-label="Secciones de Profit">
+    <button class="tab-btn active" role="tab" data-tab="panel" onclick="setTab('panel')">Panel</button>
+    <button class="tab-btn" role="tab" data-tab="compradores" onclick="setTab('compradores')">Compradores<span class="ct" id="tab-ct-buyers">0</span></button>
+    <button class="tab-btn" role="tab" data-tab="proyecciones" onclick="setTab('proyecciones')">Proyecciones</button>
+    <button class="tab-btn" role="tab" data-tab="devoluciones" onclick="setTab('devoluciones')">Devoluciones<span class="ct" id="tab-ct-rets">0</span></button>
+  </nav>
+
+  <section class="tab-pane active" id="pane-panel" role="tabpanel">
 
   <!-- Hoy en el mercado -->
   <div class="market" id="market"></div>
@@ -406,6 +511,143 @@
       </div></div>
       <p class="footnote">Lo que te queda = Precio − Comisión de Mercado Libre − Envío − Costo de las cuotas sin interés − Impuestos − Lo que te cuesta el producto. Datos de ejemplo para la demo.</p>
   </div>
+
+  </section><!-- /pane-panel -->
+
+  <!-- ============ COMPRADORES ============ -->
+  <section class="tab-pane" id="pane-compradores" role="tabpanel">
+    <div class="kpis" id="crmKpis"></div>
+    <div class="crm-grid">
+      <div>
+        <div class="crm-card">
+          <div class="crm-head">
+            <h3>Quiénes te compran</h3>
+            <div class="desc">Tu cartera de compradores con valor de vida, frecuencia y recurrencia.</div>
+          </div>
+          <div class="crm-tbar">
+            <div class="chips" id="crmChips">
+              <div class="chip active" data-f="todos" onclick="setCrmFilter('todos')">Todos<span class="ct" id="crm-c-todos">0</span></div>
+              <div class="chip" data-f="rec" onclick="setCrmFilter('rec')">Recurrentes<span class="ct" id="crm-c-rec">0</span></div>
+              <div class="chip" data-f="uni" onclick="setCrmFilter('uni')">Únicos<span class="ct" id="crm-c-uni">0</span></div>
+              <div class="chip" data-f="loy" onclick="setCrmFilter('loy')">Fieles (5+)<span class="ct" id="crm-c-loy">0</span></div>
+            </div>
+            <div class="search" style="margin-left:auto"><span class="si" id="crmSearchIcon"></span><input id="crmBuscar" type="text" placeholder="Buscar comprador…" oninput="renderCrm()"></div>
+          </div>
+          <div class="tscroll">
+            <table>
+              <thead>
+                <tr>
+                  <th class="sortable" data-k="id" onclick="setCrmSort('id')">Comprador</th>
+                  <th class="sortable" data-k="orders" onclick="setCrmSort('orders')">Órdenes</th>
+                  <th>Primera</th>
+                  <th>Última</th>
+                  <th class="sortable" data-k="ticketAvg" onclick="setCrmSort('ticketAvg')">Ticket prom.</th>
+                  <th class="sortable" data-k="total" onclick="setCrmSort('total')">Total gastado</th>
+                  <th class="sortable" data-k="ltv" onclick="setCrmSort('ltv')">LTV</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody class="crm-tbody" id="crmTbody"></tbody>
+            </table>
+          </div>
+          <p class="footnote" style="padding:12px 16px">Valor de vida (LTV) = ticket promedio × frecuencia proyectada en un horizonte de 24 meses. Para compradores únicos asumimos 0,8 compras/año.</p>
+        </div>
+      </div>
+      <aside class="crm-card crm-detail" id="crmDetail">
+        <div class="crm-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Tocá un comprador para ver su historial, devoluciones y contexto de inflación.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ PROYECCIONES ============ -->
+  <section class="tab-pane" id="pane-proyecciones" role="tabpanel">
+    <div class="proj-grid">
+      <div class="card">
+        <h3>Variables del mes que viene</h3>
+        <div class="desc">Movés los controles y la proyección se recalcula al instante.</div>
+        <div style="margin-top:14px">
+          <div class="slider-row">
+            <div class="sl-top"><label for="pInfl">Inflación esperada</label><span class="sl-val" id="pInflVal">3,0%</span></div>
+            <div class="sl-hint">Cuánto sube lo que te cuestan los productos.</div>
+            <input type="range" id="pInfl" min="0" max="15" step="0.5" value="3" oninput="renderProj()">
+          </div>
+          <div class="slider-row">
+            <div class="sl-top"><label for="pDolar">Variación del dólar</label><span class="sl-val" id="pDolarVal">2,5%</span></div>
+            <div class="sl-hint">Afecta sobre todo a los productos importados.</div>
+            <input type="range" id="pDolar" min="-5" max="20" step="0.5" value="2.5" oninput="renderProj()">
+          </div>
+          <div class="slider-row">
+            <div class="sl-top"><label for="pVol">Cambio en volumen de ventas</label><span class="sl-val" id="pVolVal">0%</span></div>
+            <div class="sl-hint">Más o menos unidades vendidas que este mes.</div>
+            <input type="range" id="pVol" min="-40" max="40" step="1" value="0" oninput="renderProj()">
+          </div>
+          <div class="slider-row">
+            <div class="sl-top"><label for="pCom">Cambio en comisiones ML</label><span class="sl-val" id="pComVal">0,0 pp</span></div>
+            <div class="sl-hint">Puntos porcentuales que ML suma o resta.</div>
+            <input type="range" id="pCom" min="-2" max="5" step="0.1" value="0" oninput="renderProj()">
+          </div>
+        </div>
+        <div class="btnrow"><button class="ghost sm" onclick="resetProj()">Volver a valores típicos</button></div>
+      </div>
+      <div>
+        <div class="card chartcard">
+          <div class="ch-head">
+            <h3>Ganancia proyectada — próximos 6 meses</h3>
+          </div>
+          <div class="leg">
+            <span><span class="ldot" style="background:var(--teal)"></span>Optimista</span>
+            <span><span class="ldot" style="background:var(--blue)"></span>Realista</span>
+            <span><span class="ldot" style="background:var(--red)"></span>Pesimista</span>
+          </div>
+          <div id="projChart" style="flex:1;display:flex;align-items:center;margin-top:8px"></div>
+        </div>
+        <div class="scenarios" style="margin-top:14px">
+          <div class="scn opt"><h5>Optimista</h5><div class="v" id="optGanancia">$0</div><div class="row"><span>Margen</span><b id="optMargen">0%</b></div><div class="row"><span>En riesgo</span><b id="optRiesgo">0</b></div></div>
+          <div class="scn real"><h5>Realista</h5><div class="v" id="realGanancia">$0</div><div class="row"><span>Margen</span><b id="realMargen">0%</b></div><div class="row"><span>En riesgo</span><b id="realRiesgo">0</b></div></div>
+          <div class="scn pes"><h5>Pesimista</h5><div class="v" id="pesGanancia">$0</div><div class="row"><span>Margen</span><b id="pesMargen">0%</b></div><div class="row"><span>En riesgo</span><b id="pesRiesgo">0</b></div></div>
+        </div>
+        <div class="semaforo" id="projSemaforo"><span class="light"></span><span id="projSemTxt">Calculando…</span></div>
+        <div class="proj-compare">
+          <h4>¿Y si ajustás los precios con el repricer?</h4>
+          <div class="desc">Comparación del escenario realista con y sin defender el margen.</div>
+          <div class="proj-cmp-grid">
+            <div class="cmp-box good"><div class="l">Con repricer activo</div><div class="v" id="cmpConVal">$0</div><div class="sub" id="cmpConSub"></div></div>
+            <div class="cmp-box bad"><div class="l">Sin ajustar precios</div><div class="v" id="cmpSinVal">$0</div><div class="sub" id="cmpSinSub"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEVOLUCIONES ============ -->
+  <section class="tab-pane" id="pane-devoluciones" role="tabpanel">
+    <div class="kpis" id="retKpis"></div>
+    <div id="retAlerts"></div>
+    <div class="tablecard">
+      <div class="sec-h" style="padding:14px 16px 0">Devoluciones por producto <small>impacto real en tu margen mensual</small></div>
+      <div class="tscroll" style="margin-top:10px">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="sortable" data-k="rate" onclick="setRetSort('rate')">Tasa</th>
+              <th>Unidades devueltas</th>
+              <th>Motivo más frecuente</th>
+              <th>Costo neto por devolución</th>
+              <th class="sortable" data-k="impactoMensual" onclick="setRetSort('impactoMensual')">Impacto mensual</th>
+              <th>Sugerencia</th>
+            </tr>
+          </thead>
+          <tbody id="retTbody"></tbody>
+        </table>
+      </div>
+      <p class="footnote" style="padding:12px 16px">Cuando se devuelve una venta, ML no reintegra todos los costos: el envío de ida, la logística inversa y el fee de procesamiento quedan a tu cargo. Acá ves el costo neto real.</p>
+    </div>
+  </section>
+
 </div>
 
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
@@ -807,7 +1049,503 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSim();});
 document.getElementById('dolarSel').addEventListener('change',()=>{renderMarket();render();});
 
 document.getElementById('searchIcon').innerHTML = IC.search;
+
+// ============================================================
+// ============ TABS (Panel · Compradores · Proyecciones · Devoluciones) ============
+// ============================================================
+let CURRENT_TAB='panel';
+function setTab(t){
+  CURRENT_TAB=t;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active',p.id==='pane-'+t));
+  if(t==='compradores') renderCrm();
+  else if(t==='proyecciones') renderProj();
+  else if(t==='devoluciones') renderRet();
+}
+
+// ============================================================
+// ============ Generador deterministico ============
+// ============================================================
+function mulberry32(seed){
+  return function(){
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const fmtDate = d => d.toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'2-digit'});
+const fmtDateShort = d => d.toLocaleDateString('es-AR',{day:'2-digit',month:'short'});
+
+// ============================================================
+// ============ CRM Compradores ============
+// ============================================================
+const TODAY = new Date(2026, 5, 22); // 22 jun 2026 (consistente con el contexto)
+
+const BUYERS = (function(){
+  const rng = mulberry32(2026);
+  const N = 34;
+  const out = [];
+  for(let i = 0; i < N; i++){
+    const id = 1800 + i*7 + Math.floor(rng() * 6);
+    const r = rng();
+    // 55% únicos (1), 30% recurrentes (2-4), 15% fieles (5-8)
+    const orders = r < 0.55 ? 1 : r < 0.85 ? 2 + Math.floor(rng()*3) : 5 + Math.floor(rng()*4);
+    const purchases = [];
+    // Rango de fechas: hasta 10 meses hacia atrás
+    const startBack = 30 + Math.floor(rng() * 270);
+    let cursor = new Date(TODAY); cursor.setDate(cursor.getDate() - startBack);
+    for(let j = 0; j < orders; j++){
+      const prodIdx = Math.floor(rng() * SEED.length);
+      const prod = SEED[prodIdx];
+      const basePrice = prod.precio;
+      const price = Math.round(basePrice * (0.92 + rng()*0.16) / 100) * 100;
+      const returned = rng() < 0.085;
+      purchases.push({sku: prod.sku, nombre: prod.nombre, cat: prod.cat, price, date: new Date(cursor), returned});
+      const gap = 18 + Math.floor(rng() * 75);
+      cursor.setDate(cursor.getDate() + gap);
+      if(cursor > TODAY){
+        cursor = new Date(TODAY);
+        cursor.setDate(cursor.getDate() - Math.floor(rng()*14));
+      }
+    }
+    purchases.sort((a, b) => a.date - b.date);
+    const validos = purchases.filter(p => !p.returned);
+    const total = validos.reduce((s, p) => s + p.price, 0);
+    const ticketAvg = validos.length ? total / validos.length : purchases[0].price;
+    const first = purchases[0].date;
+    const last = purchases[purchases.length-1].date;
+    const daysSpan = Math.max(30, (last - first) / 86400000);
+    const freqPerYear = orders > 1 ? (orders / Math.max(1, daysSpan / 365)) : 0.8;
+    const ltv = Math.round(ticketAvg * Math.max(orders, freqPerYear * 2));
+    // En Argentina, meses de alta inflación de la demo: nov 2025–feb 2026
+    const highInflShare = purchases.filter(p => {
+      const ymKey = p.date.getFullYear()*12 + p.date.getMonth();
+      const startKey = 2025*12 + 10, endKey = 2026*12 + 1;
+      return ymKey >= startKey && ymKey <= endKey;
+    }).length / orders;
+    out.push({
+      id: `Comprador #${id}`,
+      idNum: id,
+      orders,
+      purchases,
+      total,
+      ticketAvg,
+      ltv,
+      first,
+      last,
+      freqPerYear,
+      recurrent: orders >= 2,
+      loyal: orders >= 5,
+      highInflShare,
+      returnedAny: purchases.some(p => p.returned),
+      returnedCount: purchases.filter(p => p.returned).length
+    });
+  }
+  return out;
+})();
+
+let CRM_FILTER='todos', CRM_SORT={k:'ltv',asc:false}, CRM_SELECTED=null;
+function setCrmFilter(f){
+  CRM_FILTER=f;
+  document.querySelectorAll('#crmChips .chip').forEach(c=>c.classList.toggle('active',c.dataset.f===f));
+  renderCrm();
+}
+function setCrmSort(k){
+  if(CRM_SORT.k===k) CRM_SORT.asc=!CRM_SORT.asc;
+  else { CRM_SORT.k=k; CRM_SORT.asc=(k==='id'); }
+  renderCrm();
+}
+
+function renderCrm(){
+  const tb=document.getElementById('crmTbody'); if(!tb) return;
+  // chip counts
+  const totalN=BUYERS.length;
+  const recN=BUYERS.filter(b=>b.recurrent && !b.loyal).length;
+  const uniN=BUYERS.filter(b=>!b.recurrent).length;
+  const loyN=BUYERS.filter(b=>b.loyal).length;
+  const setCt=(id,n)=>{const el=document.getElementById(id); if(el)el.textContent=n;};
+  setCt('crm-c-todos',totalN); setCt('crm-c-rec',recN); setCt('crm-c-uni',uniN); setCt('crm-c-loy',loyN);
+  setCt('tab-ct-buyers',totalN);
+
+  // mark sorted headers
+  document.querySelectorAll('#pane-compradores th.sortable').forEach(th=>{
+    th.classList.remove('sorted','asc');
+    if(th.dataset.k===CRM_SORT.k) th.classList.add(CRM_SORT.asc?'asc':'sorted');
+  });
+
+  const q=(document.getElementById('crmBuscar')?.value||'').trim().toLowerCase();
+  let list=BUYERS.filter(b=>{
+    if(CRM_FILTER==='rec' && (!b.recurrent || b.loyal)) return false;
+    if(CRM_FILTER==='uni' && b.recurrent) return false;
+    if(CRM_FILTER==='loy' && !b.loyal) return false;
+    if(q && !b.id.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  list.sort((a,b)=>{
+    let av=a[CRM_SORT.k], bv=b[CRM_SORT.k];
+    if(av instanceof Date) av=av.getTime();
+    if(bv instanceof Date) bv=bv.getTime();
+    if(typeof av==='string') return CRM_SORT.asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return CRM_SORT.asc ? av-bv : bv-av;
+  });
+
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:26px">No hay compradores en esta vista.</td></tr>';
+  } else {
+    tb.innerHTML=list.map(b=>{
+      const tipo = b.loyal ? '<span class="crm-pill loy">Fiel</span>'
+                 : b.recurrent ? '<span class="crm-pill rec">Recurrente</span>'
+                 : '<span class="crm-pill uni">Único</span>';
+      const sel = CRM_SELECTED===b.idNum ? ' selected' : '';
+      return `<tr class="${sel.trim()}" onclick="selectBuyer(${b.idNum})">
+        <td><b>${b.id}</b></td>
+        <td class="num">${b.orders}</td>
+        <td class="num" style="color:var(--muted);font-size:11.5px">${fmtDateShort(b.first)}</td>
+        <td class="num" style="color:var(--muted);font-size:11.5px">${fmtDateShort(b.last)}</td>
+        <td class="num">${fmt(b.ticketAvg)}</td>
+        <td class="num"><b>${fmt(b.total)}</b></td>
+        <td class="num" style="color:var(--teal-dk);font-weight:700">${fmt(b.ltv)}</td>
+        <td>${tipo}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // KPIs
+  const totalLtv = BUYERS.reduce((s,b)=>s+b.ltv,0);
+  const avgLtv = totalLtv / BUYERS.length;
+  const avgTicket = BUYERS.reduce((s,b)=>s+b.ticketAvg,0) / BUYERS.length;
+  const recPct = (BUYERS.filter(b=>b.recurrent).length / BUYERS.length) * 100;
+  const totalSpent = BUYERS.reduce((s,b)=>s+b.total,0);
+  document.getElementById('crmKpis').innerHTML=`
+    <div class="kpi"><div class="label">Compradores</div><div class="val">${totalN}</div><div class="hint">en los últimos 10 meses</div></div>
+    <div class="kpi"><div class="label">Ticket promedio</div><div class="val">${fmt(avgTicket)}</div><div class="hint">por compra exitosa</div></div>
+    <div class="kpi"><div class="label">LTV promedio</div><div class="val teal">${fmt(avgLtv)}</div><div class="hint">valor de vida estimado a 24 meses</div></div>
+    <div class="kpi"><div class="label">Recurrentes</div><div class="val ${recPct>=35?'teal':'amber'}">${recPct.toFixed(0)}%</div><div class="hint">${BUYERS.filter(b=>b.recurrent).length} compradores con 2 o más compras</div></div>
+    <div class="kpi"><div class="label">Facturado total</div><div class="val">${fmt(totalSpent)}</div><div class="hint">sumando todas las órdenes (sin devoluciones)</div></div>`;
+
+  renderCrmDetail();
+}
+
+function selectBuyer(idNum){
+  CRM_SELECTED=idNum;
+  document.querySelectorAll('#crmTbody tr').forEach(tr=>tr.classList.remove('selected'));
+  // Mark visually without full re-render
+  renderCrm();
+}
+
+function renderCrmDetail(){
+  const el=document.getElementById('crmDetail'); if(!el) return;
+  if(CRM_SELECTED==null){
+    el.innerHTML=`<div class="crm-empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Tocá un comprador para ver su historial, devoluciones y contexto de inflación.</div>`;
+    return;
+  }
+  const b=BUYERS.find(x=>x.idNum===CRM_SELECTED);
+  if(!b){ CRM_SELECTED=null; return renderCrmDetail(); }
+  const tipo = b.loyal ? '<span class="crm-pill loy">Fiel</span>'
+             : b.recurrent ? '<span class="crm-pill rec">Recurrente</span>'
+             : '<span class="crm-pill uni">Único</span>';
+  const prods = b.purchases.map(p=>`
+    <div class="crm-prod">
+      <div><b>${p.nombre}</b><small>${p.cat} · ${fmtDate(p.date)}</small></div>
+      <div class="num" style="text-align:right">${fmt(p.price)}${p.returned?'<span class="crm-retbadge">DEV</span>':''}</div>
+    </div>`).join('');
+  const inflTxt = b.highInflShare >= 0.5
+    ? `<b>${(b.highInflShare*100).toFixed(0)}%</b> de sus compras cayeron en el pico de inflación (nov 2025 – feb 2026). Probablemente compró por miedo a la suba de precios.`
+    : b.highInflShare > 0
+    ? `<b>${(b.highInflShare*100).toFixed(0)}%</b> de sus compras fueron durante el pico de inflación, el resto en meses calmos.`
+    : `Todas sus compras fueron en períodos de baja inflación.`;
+  const devTxt = b.returnedCount > 0
+    ? `Devolvió <b>${b.returnedCount} de ${b.orders}</b> compras.`
+    : 'Nunca devolvió una compra.';
+  el.innerHTML=`
+    <h4 style="padding-right:8px">${b.id} ${tipo}</h4>
+    <div class="crm-sub">Cliente desde ${fmtDate(b.first)} · última compra ${fmtDate(b.last)}</div>
+    <div class="crm-row"><span>Órdenes totales</span><b>${b.orders}</b></div>
+    <div class="crm-row"><span>Ticket promedio</span><b>${fmt(b.ticketAvg)}</b></div>
+    <div class="crm-row"><span>Total gastado</span><b>${fmt(b.total)}</b></div>
+    <div class="crm-row"><span>Frecuencia proyectada</span><b>${b.freqPerYear.toFixed(1)}/año</b></div>
+    <div class="crm-row"><span>Valor de vida (LTV)</span><b style="color:var(--teal-dk)">${fmt(b.ltv)}</b></div>
+    <div class="crm-section-h">Productos comprados</div>
+    ${prods}
+    <div class="crm-section-h">Devoluciones</div>
+    <div class="crm-ctx" style="background:${b.returnedCount?'var(--red-soft)':'var(--teal-soft)'};color:${b.returnedCount?'#a82c33':'#15705c'}">${devTxt}</div>
+    <div class="crm-section-h">Contexto de inflación</div>
+    <div class="crm-ctx">${inflTxt}</div>`;
+}
+
+// ============================================================
+// ============ Proyecciones financieras ============
+// ============================================================
+const PROJ_DEFAULTS = {infl:3.0, dolar:2.5, vol:0, com:0};
+function getProjVals(){
+  return {
+    infl: parseFloat(document.getElementById('pInfl').value),
+    dolar: parseFloat(document.getElementById('pDolar').value),
+    vol: parseFloat(document.getElementById('pVol').value),
+    com: parseFloat(document.getElementById('pCom').value)
+  };
+}
+function resetProj(){
+  document.getElementById('pInfl').value=PROJ_DEFAULTS.infl;
+  document.getElementById('pDolar').value=PROJ_DEFAULTS.dolar;
+  document.getElementById('pVol').value=PROJ_DEFAULTS.vol;
+  document.getElementById('pCom').value=PROJ_DEFAULTS.com;
+  renderProj();
+}
+
+function projectMonth(modInfl, modDolar, modVol, modCom, repricerOn){
+  // Aplica un mes de modificaciones sobre el catálogo y devuelve métricas agregadas
+  let totalGanancia = 0, sumPct = 0, riesgo = 0;
+  const ventasBase = 22; // unidades/mes baseline por producto
+  DATA.forEach(p => {
+    const sim = {...p};
+    // Costo del producto se mueve por inflación (ARS) o dólar (USD)
+    if(sim.moneda === 'USD'){
+      sim.costo = sim.costo * (1 + modDolar/100);
+    } else {
+      sim.costo = sim.costo * (1 + modInfl/100);
+    }
+    // Comisiones
+    sim.comisionPct = Math.max(0, sim.comisionPct + modCom);
+    // Repricer: si está activo, sube el precio para defender el margen
+    if(repricerOn){
+      const suba = sim.moneda === 'USD' ? modDolar*0.9 : modInfl*0.95;
+      sim.precio = Math.round(sim.precio * (1 + suba/100) / 100) * 100;
+    }
+    const c = calc(sim);
+    const ventas = ventasBase * (1 + modVol/100);
+    totalGanancia += c.queda * ventas;
+    sumPct += c.pct;
+    if(c.pct < GANA_MIN) riesgo++;
+  });
+  return {
+    ganancia: totalGanancia,
+    margen: sumPct / DATA.length,
+    riesgo
+  };
+}
+
+function projectSeries(modInfl, modDolar, modVol, modCom, months){
+  // Acumula mes a mes para el gráfico de líneas
+  const out = [];
+  let infl = 0, dolar = 0;
+  for(let m = 1; m <= months; m++){
+    infl = modInfl * m;       // acumulado lineal simple para la proyección
+    dolar = modDolar * m;
+    const r = projectMonth(infl, dolar, modVol, modCom*m, true);
+    out.push(r.ganancia);
+  }
+  return out;
+}
+
+function renderProj(){
+  if(!document.getElementById('pInfl')) return;
+  const v = getProjVals();
+  // Mostrar valores en los sliders
+  document.getElementById('pInflVal').textContent = `${v.infl.toFixed(1).replace('.',',')}%`;
+  document.getElementById('pDolarVal').textContent = `${v.dolar.toFixed(1).replace('.',',')}%`;
+  document.getElementById('pVolVal').textContent = `${v.vol>0?'+':''}${v.vol.toFixed(0)}%`;
+  document.getElementById('pComVal').textContent = `${v.com>0?'+':''}${v.com.toFixed(1).replace('.',',')} pp`;
+
+  // Tres escenarios sobre el mes próximo
+  const real = projectMonth(v.infl, v.dolar, v.vol, v.com, true);
+  const opt  = projectMonth(v.infl*0.6, v.dolar*0.5, v.vol+6, v.com*0.4, true);
+  const pes  = projectMonth(v.infl*1.7 + 1, v.dolar*1.6 + 1, v.vol-12, v.com*1.5 + 0.5, true);
+
+  const writeScn=(prefix, r)=>{
+    const g=document.getElementById(prefix+'Ganancia'); g.textContent=fmt(r.ganancia); g.classList.toggle('neg', r.ganancia<0);
+    document.getElementById(prefix+'Margen').textContent = r.margen.toFixed(1).replace('.',',')+'%';
+    document.getElementById(prefix+'Riesgo').textContent = r.riesgo + (r.riesgo===1?' producto':' productos');
+  };
+  writeScn('opt', opt); writeScn('real', real); writeScn('pes', pes);
+
+  // Semáforo según escenario realista
+  const sem = document.getElementById('projSemaforo');
+  const semTxt = document.getElementById('projSemTxt');
+  sem.classList.remove('green','yellow','red');
+  if(real.margen >= GANA_OBJ && real.riesgo <= 1){
+    sem.classList.add('green');
+    semTxt.innerHTML = `<b>Zona segura.</b> Con estos valores, el realista cierra con ${real.margen.toFixed(0)}% de margen y solo ${real.riesgo} producto en riesgo.`;
+  } else if(real.margen >= GANA_MIN && real.riesgo <= 3){
+    sem.classList.add('yellow');
+    semTxt.innerHTML = `<b>Atención.</b> El margen baja a ${real.margen.toFixed(0)}% y ${real.riesgo} productos quedan en zona de poca ganancia. Revisá precios.`;
+  } else {
+    sem.classList.add('red');
+    semTxt.innerHTML = `<b>Peligro.</b> En el escenario realista quedan ${real.riesgo} productos perdiendo o casi sin ganancia. Hay que actuar ahora.`;
+  }
+
+  // Comparación con/sin repricer (sobre escenario realista)
+  const sinRepricer = projectMonth(v.infl, v.dolar, v.vol, v.com, false);
+  document.getElementById('cmpConVal').textContent = fmt(real.ganancia);
+  document.getElementById('cmpConSub').textContent = `Margen ${real.margen.toFixed(1).replace('.',',')}% · ${real.riesgo} en riesgo`;
+  document.getElementById('cmpSinVal').textContent = fmt(sinRepricer.ganancia);
+  document.getElementById('cmpSinSub').textContent = `Margen ${sinRepricer.margen.toFixed(1).replace('.',',')}% · ${sinRepricer.riesgo} en riesgo`;
+
+  // Gráfico de líneas — 6 meses, 3 escenarios
+  drawProjChart(v);
+}
+
+function drawProjChart(v){
+  const W=640, H=210, pad=42;
+  const months = 6;
+  const labels = ['Jul','Ago','Sep','Oct','Nov','Dic'];
+  const sReal = projectSeries(v.infl, v.dolar, v.vol, v.com, months);
+  const sOpt  = projectSeries(v.infl*0.6, v.dolar*0.5, v.vol+6, v.com*0.4, months);
+  const sPes  = projectSeries(v.infl*1.7+1, v.dolar*1.6+1, v.vol-12, v.com*1.5+0.5, months);
+  const all = [...sReal, ...sOpt, ...sPes];
+  let mn = Math.min(...all, 0), mx = Math.max(...all);
+  // Pad axis range
+  const rng = Math.max(1, mx - mn);
+  mn -= rng*0.05; mx += rng*0.08;
+  const x = i => pad + i*(W-pad*2)/(months-1);
+  const y = val => H - pad - (val - mn)/(mx - mn)*(H - pad*2);
+  const line = a => a.map((val,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+  const shortMoney = n => {
+    const abs = Math.abs(n);
+    if(abs >= 1e6) return (n/1e6).toFixed(1).replace('.',',')+'M';
+    if(abs >= 1e3) return (n/1e3).toFixed(0)+'k';
+    return Math.round(n)+'';
+  };
+  let grid='';
+  const ticks = 4;
+  for(let i=0; i<=ticks; i++){
+    const val = mn + (mx-mn)*i/ticks;
+    grid += `<line x1="${pad}" y1="${y(val)}" x2="${W-pad}" y2="${y(val)}" stroke="#eef1f5"/>
+             <text x="${pad-6}" y="${y(val)+3}" fill="#9aa6b5" font-size="9.5" text-anchor="end">$${shortMoney(val)}</text>`;
+  }
+  const labelsX = labels.map((l,i)=>`<text x="${x(i)}" y="${H-pad+15}" fill="#9aa6b5" font-size="9.5" text-anchor="middle">${l}</text>`).join('');
+  const dots=(a,col)=>a.map((val,i)=>`<circle cx="${x(i)}" cy="${y(val)}" r="3" fill="${col}" stroke="#fff" stroke-width="1.5"/>`).join('');
+  document.getElementById('projChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:680px">
+    ${grid}
+    <path d="${line(sPes)}" fill="none" stroke="#ef4d54" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="${line(sReal)}" fill="none" stroke="#0065f3" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="${line(sOpt)}" fill="none" stroke="#2bb89a" stroke-width="2.4" stroke-linecap="round"/>
+    ${dots(sPes,'#ef4d54')}${dots(sReal,'#0065f3')}${dots(sOpt,'#2bb89a')}
+    ${labelsX}
+  </svg>`;
+}
+
+// ============================================================
+// ============ Devoluciones ============
+// ============================================================
+const DEV_REASONS = {
+  talle:    {label:'Talle / no me quedó', tip:'Agregá tabla de medidas y referencias de tamaño en las fotos.'},
+  esperado: {label:'No era lo esperado',  tip:'Mejorá la descripción y sumá más fotos reales del producto.'},
+  danado:   {label:'Llegó dañado',         tip:'Revisá el embalaje y reforzá con burbujas o cartón.'},
+  tarde:    {label:'Llegó tarde',          tip:'Probá Mercado Envíos Flex o despacho prioritario.'},
+  falla:    {label:'Tiene una falla',      tip:'Hablá con el proveedor y revisá el control de calidad.'}
+};
+
+const RETURNS = (function(){
+  const rng = mulberry32(909);
+  return SEED.map((p, i) => {
+    const baseRate = 3 + rng() * 15; // 3-18%
+    const monthly = 18 + Math.floor(rng() * 55);
+    const returned = Math.max(1, Math.round(monthly * baseRate / 100));
+    let weights;
+    if(p.cat === 'Indumentaria') weights = {talle:0.52, esperado:0.18, danado:0.10, tarde:0.10, falla:0.10};
+    else if(p.cat === 'Electrónica' || p.cat === 'Electrohogar') weights = {talle:0.02, esperado:0.25, danado:0.20, tarde:0.13, falla:0.40};
+    else if(p.cat === 'Hogar') weights = {talle:0.05, esperado:0.30, danado:0.35, tarde:0.10, falla:0.20};
+    else weights = {talle:0.05, esperado:0.40, danado:0.25, tarde:0.15, falla:0.15};
+    const topReason = Object.entries(weights).sort((a,b) => b[1]-a[1])[0][0];
+    return {
+      sku: p.sku, nombre: p.nombre, cat: p.cat,
+      rate: baseRate, monthly, returned, weights, topReason
+    };
+  });
+})();
+
+// Costo neto por devolución (depende del producto actual, recalcula en cada render)
+function netoPorDev(p){
+  const envioIda = p.envio || 3200; // si era envío gratis igual lo paga el vendedor
+  const logInversa = Math.round((p.envio || 3200) * 0.6);
+  const fee = Math.round(p.precio * 0.04);
+  return envioIda + logInversa + fee;
+}
+
+let RET_SORT={k:'rate', asc:false};
+function setRetSort(k){
+  if(RET_SORT.k===k) RET_SORT.asc=!RET_SORT.asc;
+  else { RET_SORT.k=k; RET_SORT.asc=false; }
+  renderRet();
+}
+
+function renderRet(){
+  const tb=document.getElementById('retTbody'); if(!tb) return;
+  // Combinar RETURNS estáticos con precios actuales
+  const rows = RETURNS.map(r => {
+    const p = DATA.find(x => x.sku === r.sku);
+    const neto = netoPorDev(p);
+    const impactoMensual = neto * r.returned;
+    return {...r, neto, impactoMensual, precio: p.precio};
+  });
+  rows.sort((a,b) => {
+    const av=a[RET_SORT.k], bv=b[RET_SORT.k];
+    return RET_SORT.asc ? av-bv : bv-av;
+  });
+  document.querySelectorAll('#pane-devoluciones th.sortable').forEach(th=>{
+    th.classList.remove('sorted','asc');
+    if(th.dataset.k===RET_SORT.k) th.classList.add(RET_SORT.asc?'asc':'sorted');
+  });
+
+  tb.innerHTML = rows.map(r => {
+    const rateCls = r.rate < 7 ? 't' : r.rate < 12 ? 'a' : 'r';
+    const reason = DEV_REASONS[r.topReason];
+    const reasonPct = (r.weights[r.topReason]*100).toFixed(0);
+    const tipIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c1 .8 1.5 1.5 1.5 2.3v1h5v-1c0-.8.5-1.5 1.5-2.3A7 7 0 0 0 12 2Z"/></svg>';
+    return `<tr>
+      <td><div class="prod"><b>${r.nombre}</b><small>${r.cat}</small></div></td>
+      <td class="ret-rate ${rateCls}">${r.rate.toFixed(1)}%<div class="ret-rate-bar"><div class="f ${rateCls}" style="width:${Math.min(100, r.rate*5)}%"></div></div></td>
+      <td class="num">${r.returned} <span style="color:var(--muted);font-size:10.5px">de ${r.monthly}</span></td>
+      <td><b style="font-size:12px">${reason.label}</b><div style="color:var(--muted);font-size:10.5px;margin-top:1px">${reasonPct}% de los casos</div></td>
+      <td class="num">−${fmt(r.neto)}</td>
+      <td class="num"><b style="color:var(--red)">−${fmt(r.impactoMensual)}</b></td>
+      <td><span class="ret-tip">${tipIcon}${reason.tip}</span></td>
+    </tr>`;
+  }).join('');
+
+  // Alertas para productos con tasa > 10%
+  const alerts = rows.filter(r => r.rate > 10).sort((a,b)=>b.impactoMensual-a.impactoMensual);
+  const alertHtml = alerts.length
+    ? alerts.map(r => `<div class="ret-alert">${IC.alert}<div><b>${r.nombre}</b> tiene una tasa de devolución de <b>${r.rate.toFixed(1)}%</b>. Estás perdiendo <b>${fmt(r.impactoMensual)}/mes</b> en costos de logística inversa. ${DEV_REASONS[r.topReason].tip}</div></div>`).join('')
+    : '';
+  document.getElementById('retAlerts').innerHTML = alertHtml;
+
+  // KPIs
+  const totalDev = rows.reduce((s,r)=>s+r.returned,0);
+  const totalVentas = rows.reduce((s,r)=>s+r.monthly,0);
+  const tasaPromedio = (totalDev / totalVentas) * 100;
+  const impactoTotal = rows.reduce((s,r)=>s+r.impactoMensual,0);
+  const criticos = rows.filter(r=>r.rate>10).length;
+  document.getElementById('retKpis').innerHTML=`
+    <div class="kpi"><div class="label">Devoluciones del mes</div><div class="val">${totalDev}</div><div class="hint">de ${totalVentas} ventas totales</div></div>
+    <div class="kpi"><div class="label">Tasa promedio</div><div class="val ${tasaPromedio<7?'teal':tasaPromedio<12?'amber':'red'}">${tasaPromedio.toFixed(1)}%</div><div class="hint">ponderada por volumen</div></div>
+    <div class="kpi"><div class="label">Costo logística inversa</div><div class="val red">−${fmt(impactoTotal)}</div><div class="hint">mensual, ya descontado de tu margen</div></div>
+    <div class="kpi"><div class="label">Productos críticos</div><div class="val ${criticos?'red':'teal'}">${criticos}</div><div class="hint">con tasa mayor a 10%</div></div>
+    <div class="kpi"><div class="label">Motivo más frecuente</div><div class="val" style="font-size:16px;line-height:1.2;padding-top:6px">${DEV_REASONS[topGlobalReason(rows)].label}</div><div class="hint">en todo el catálogo</div></div>`;
+
+  document.getElementById('tab-ct-rets').textContent = criticos || rows.filter(r=>r.rate>=7).length;
+}
+
+function topGlobalReason(rows){
+  const acc = {talle:0, esperado:0, danado:0, tarde:0, falla:0};
+  rows.forEach(r => {
+    Object.entries(r.weights).forEach(([k,w]) => acc[k] += w * r.returned);
+  });
+  return Object.entries(acc).sort((a,b)=>b[1]-a[1])[0][0];
+}
+
+// ============================================================
+// ============ Init ============
+// ============================================================
+document.getElementById('crmSearchIcon').innerHTML = IC.search;
 setAjustarUI(); renderMarket(); render();
+// Pre-cargar contadores de pestañas
+document.getElementById('tab-ct-buyers').textContent = BUYERS.length;
+renderRet(); // calcula el contador inicial de devoluciones críticas
 </script>
 </body>
 </html>
