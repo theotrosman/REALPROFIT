@@ -277,6 +277,56 @@ button.sm{padding:8px 13px;font-size:12.5px}
 /* ── Toast ──────────────────────────────────────────────── */
 .toast{position:fixed;bottom:26px;left:50%;background:var(--ink);color:#fff;padding:13px 22px;border-radius:var(--r);font-size:13px;font-weight:600;z-index:99;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:90vw;opacity:0;transform:translateX(-50%) translateY(12px);transition:opacity .26s var(--ease-out),transform .26s var(--ease-out)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── KPI gradient tints (premium feel) ──────────────────── */
+.kpi2:nth-child(1){background:linear-gradient(150deg,#fff 50%,var(--blue-soft))}
+.kpi2:nth-child(2){background:linear-gradient(150deg,#fff 50%,var(--teal-soft))}
+.kpi2:nth-child(3){background:linear-gradient(150deg,#fff 50%,var(--amber-soft))}
+.kpi2:nth-child(4){background:linear-gradient(150deg,#fff 50%,var(--red-soft))}
+
+/* KPI período-anterior badge */
+.kpi2-delta{font-size:10.5px;font-weight:700;margin-top:7px;padding:2px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:3px;width:fit-content;letter-spacing:-.01em}
+.kpi2-delta.up{color:var(--teal-dk);background:var(--teal-soft)}
+.kpi2-delta.dn-good{color:var(--teal-dk);background:var(--teal-soft)}
+.kpi2-delta.dn{color:var(--red);background:var(--red-soft)}
+
+/* ── Row entrance animations ─────────────────────────────── */
+@keyframes rowIn{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+@keyframes skuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Negative row red accent (layout-safe inset shadow) ──── */
+tbody tr.prow td:first-child,tbody tr.skurow td:first-child{
+  box-shadow:inset 3px 0 0 transparent;
+  transition:box-shadow .15s var(--ease-out)
+}
+tbody tr.neg-row td:first-child{box-shadow:inset 3px 0 0 var(--red)!important}
+tbody tr.neg-row{background:rgba(239,77,84,.03)!important}
+@media(hover:hover) and (pointer:fine){
+  tbody tr.prow:not(.neg-row):hover td:first-child{box-shadow:inset 3px 0 0 rgba(0,101,243,.35)}
+}
+
+/* ── Margen sparkbar ─────────────────────────────────────── */
+.spark-wrap{display:flex;align-items:center;gap:7px;justify-content:flex-end}
+.spark-track{width:44px;height:4px;background:var(--bg);border-radius:4px;overflow:hidden;flex:0 0 auto}
+.spark-fill{height:100%;border-radius:4px;width:0;transition:width .65s var(--ease-out)}
+.spark-fill.teal{background:var(--teal)}
+.spark-fill.amber{background:var(--amber)}
+.spark-fill.red{background:var(--red)}
+
+/* ── Alert bar icon pulse ────────────────────────────────── */
+@keyframes alertPulse{0%,100%{opacity:1}50%{opacity:.35}}
+.alert-bar svg{animation:alertPulse 2.2s ease-in-out infinite}
+
+/* ── Modal stats staggered entrance ─────────────────────── */
+@keyframes statIn{from{opacity:0;transform:translateY(7px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mstat{animation:statIn .22s cubic-bezier(.23,1,.32,1) both}
+.mstat:nth-child(1){animation-delay:.06s}
+.mstat:nth-child(2){animation-delay:.13s}
+.mstat:nth-child(3){animation-delay:.20s}
+
+/* ── Potencial de ahorro chip ────────────────────────────── */
+.potential-note{background:linear-gradient(130deg,var(--teal-soft),#e2f7f1);border:1px solid rgba(43,184,154,.28);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--teal-dk);margin-top:10px;line-height:1.5;display:flex;align-items:flex-start;gap:9px}
+.potential-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px}
 </style>
 </head>
 <body>
@@ -549,6 +599,12 @@ function renderKPIs(days) {
   const { ingTot, ganTot, margenProm, impTot } = getKPIs(days);
   const mCls = margenProm > 15 ? 'teal' : margenProm >= 8 ? 'amber' : 'red';
   const gCls = ganTot >= 0 ? '' : 'red';
+  // Simulated period-over-period deltas (demo — same direction each tier)
+  const di = days <= 7 ? 0 : days <= 30 ? 1 : 2;
+  const dIng   = [6.2,  8.4, 12.1][di];
+  const dGan   = [9.1, 11.2, 15.3][di];
+  const dM     = [0.9,  1.3,  2.1][di];
+  const dImp   = [2.8,  4.1,  6.4][di];
   document.getElementById('kpis2').innerHTML = `
     <div class="kpi2">
       <div class="kpi2-top">
@@ -557,6 +613,7 @@ function renderKPIs(days) {
       </div>
       <div class="kpi2-val">${fmtK(ingTot)}</div>
       <div class="kpi2-hint">todos los SKUs · antes de costos</div>
+      <span class="kpi2-delta up">↑ ${dIng.toFixed(1)}% vs período anterior</span>
     </div>
     <div class="kpi2">
       <div class="kpi2-top">
@@ -565,6 +622,7 @@ function renderKPIs(days) {
       </div>
       <div class="kpi2-val ${gCls || 'teal'}">${fmtK(ganTot)}</div>
       <div class="kpi2-hint">después de restar todo, incluso devoluciones</div>
+      <span class="kpi2-delta up">↑ ${dGan.toFixed(1)}% vs período anterior</span>
     </div>
     <div class="kpi2">
       <div class="kpi2-top">
@@ -573,6 +631,7 @@ function renderKPIs(days) {
       </div>
       <div class="kpi2-val ${mCls}">${fmtP(margenProm)}</div>
       <div class="kpi2-hint">ponderado por ingresos · objetivo: +15%</div>
+      <span class="kpi2-delta up">↑ ${dM.toFixed(1)}pp vs período anterior</span>
     </div>
     <div class="kpi2">
       <div class="kpi2-top">
@@ -581,6 +640,7 @@ function renderKPIs(days) {
       </div>
       <div class="kpi2-val red">−${fmtK(impTot)}</div>
       <div class="kpi2-hint">ganancia perdida por productos devueltos</div>
+      <span class="kpi2-delta dn-good">↓ ${dImp.toFixed(1)}% — mejoraste</span>
     </div>`;
 }
 
@@ -624,7 +684,7 @@ function renderTable(days) {
 
   // Filas
   const rows = prodSort(PRODS.map(p => ({ prod: p, m: getProdMetrics(p, days) })));
-  rows.forEach(({ prod: p, m }) => {
+  rows.forEach(({ prod: p, m }, rowIdx) => {
     const isVar = !!p.skus;
     const isExp = EXPANDED.has(p.id);
     const rc = retClass(m.tdev);
@@ -634,8 +694,11 @@ function renderTable(days) {
       ? `<button class="exp-btn${isExp?' open':''}" onclick="toggleExpand('${p.id}',event)" title="${isExp?'Colapsar':'Expandir variantes'}">${IC.chevron}${isExp ? 'Ocultar' : 'Ver SKUs'}</button>`
       : '';
 
+    const sparkPct = Math.max(0, Math.min(100, m.margen / 30 * 100)).toFixed(1);
+
     const tr = document.createElement('tr');
-    tr.className = 'prow';
+    tr.className = 'prow' + (m.ganNeta < 0 ? ' neg-row' : '');
+    tr.style.cssText = `animation:rowIn .28s cubic-bezier(.23,1,.32,1) ${rowIdx * 45}ms both`;
     tr.onclick = () => openModal(p.id, null);
     tr.innerHTML = `
       <td style="min-width:220px">
@@ -654,7 +717,12 @@ function renderTable(days) {
       <td class="num">${fmt(m.ingresos)}</td>
       <td class="num neg">−${fmt(m.costos)}</td>
       <td class="num ${m.ganNeta<0?'neg':'pos'}"><b>${fmt(m.ganNeta)}</b></td>
-      <td class="num ${m.margen>15?'pos':m.margen>=8?'warn-val':'neg'}"><b>${fmtP(m.margen)}</b></td>
+      <td class="num">
+        <div class="spark-wrap">
+          <b class="${m.margen>15?'pos':m.margen>=8?'warn-val':'neg'}">${fmtP(m.margen)}</b>
+          <div class="spark-track"><div class="spark-fill ${m.estado}" data-w="${sparkPct}"></div></div>
+        </div>
+      </td>
       <td><span class="pill ${m.estado}">${m.estado==='teal'?'Buen margen':m.estado==='amber'?'Margen justo':m.ganNeta<0?'Margen negativo':'Margen crítico'}</span></td>`;
     tbody.appendChild(tr);
 
@@ -663,8 +731,9 @@ function renderTable(days) {
       p.skus.forEach(s => {
         const sm = getSKUMetrics(p, s, days);
         const src = retClass(sm.tdev);
+        const sPct = Math.max(0, Math.min(100, sm.margen / 30 * 100)).toFixed(1);
         const str = document.createElement('tr');
-        str.className = 'skurow' + (isExp ? ' vis' : '');
+        str.className = 'skurow' + (sm.ganNeta < 0 ? ' neg-row' : '') + (isExp ? ' vis' : '');
         str.id = `skurow-${s.id}`;
         str.onclick = (e) => { e.stopPropagation(); openModal(p.id, s.id); };
         str.innerHTML = `
@@ -685,12 +754,24 @@ function renderTable(days) {
           <td class="num">${fmt(sm.ingresos)}</td>
           <td class="num neg">−${fmt(sm.costos)}</td>
           <td class="num ${sm.ganNeta<0?'neg':'pos'}"><b>${fmt(sm.ganNeta)}</b></td>
-          <td class="num ${sm.margen>15?'pos':sm.margen>=8?'warn-val':'neg'}"><b>${fmtP(sm.margen)}</b></td>
+          <td class="num">
+            <div class="spark-wrap">
+              <b class="${sm.margen>15?'pos':sm.margen>=8?'warn-val':'neg'}">${fmtP(sm.margen)}</b>
+              <div class="spark-track"><div class="spark-fill ${sm.estado}" data-w="${sPct}"></div></div>
+            </div>
+          </td>
           <td><span class="pill ${sm.estado}">${sm.estado==='teal'?'Buen margen':sm.estado==='amber'?'Margen justo':'Margen negativo'}</span></td>`;
         tbody.appendChild(str);
       });
     }
   });
+
+  // Trigger sparkbar fill animations (staggered, layout-safe via double-RAF)
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('#tbody .spark-fill[data-w]').forEach((f, i) => {
+      setTimeout(() => { f.style.width = f.dataset.w + '%'; }, i * 30);
+    });
+  }));
 
   // Actualizar indicadores de sort en thead
   document.querySelectorAll('thead th.sort').forEach(th => {
@@ -757,7 +838,7 @@ function openModal(prodId, skuId) {
     const totClass = r.total ? ' total' : '';
     return `<div class="wf-row${sepClass}${totClass}">
       <div class="wf-label${r.total?' ink':''}">${r.label}</div>
-      <div class="wf-track"><div class="wf-bar ${r.bar}" style="width:${r.pct.toFixed(1)}%"></div></div>
+      <div class="wf-track"><div class="wf-bar ${r.bar}" data-w="${r.pct.toFixed(1)}"></div></div>
       <div class="wf-val ${r.total?'total ':''} ${r.cls}">${r.val===0?'$0':r.val<0?'−'+fmt(Math.abs(r.val)):fmt(r.val)}${r.total?' <span style="color:var(--muted);font-weight:400;font-size:11px;margin-left:4px">('+fmtP(Math.abs(r.val)/precio*100)+')</span>':''}</div>
     </div>`;
   }).join('');
@@ -765,6 +846,23 @@ function openModal(prodId, skuId) {
   // Mini chart SVG
   const pts = weeklyMargins(prod, skuId ? prod.skus.find(s=>s.id===skuId) : null, days);
   const miniChart = buildMiniChart(pts);
+
+  // Potencial de ahorro si reducen devoluciones al 5%
+  const TARGET_TDEV = 5;
+  let potentialHTML = '';
+  if (metrics.tdev > TARGET_TDEV + 1 && metrics.ventas > 0 && metrics.impactoDev > 0) {
+    const curDevRate    = metrics.devueltas / metrics.ventas;
+    const tgtDevRate    = TARGET_TDEV / 100;
+    const tgtImpacto    = metrics.impactoDev * (tgtDevRate / curDevRate);
+    const potSaving     = metrics.impactoDev - tgtImpacto;
+    const tgtGan        = metrics.ganNeta + potSaving;
+    const tgtMargen     = metrics.ingresos > 0 ? tgtGan / metrics.ingresos * 100 : 0;
+    potentialHTML = `
+      <div class="potential-note">
+        ${IC.trend}
+        <span>Si redujeras las devoluciones al 5%, tu margen real pasaría de <b>${fmtP(margenConDev)}</b> a <b>${fmtP(tgtMargen)}</b> — recuperarías <b>${fmt(potSaving)}</b> este período.</span>
+      </div>`;
+  }
 
   const comboNote = prod.tipo === 'combo'
     ? `<div style="background:var(--blue-soft);border-radius:var(--r);padding:10px 13px;font-size:12px;color:var(--blue-dk);margin:12px 0;line-height:1.5;display:flex;align-items:flex-start;gap:8px">${IC.box}<span><b>Bundle:</b> ${prod.comboNote}. El costo se calcula como la suma de sus componentes.</span></div>` : '';
@@ -817,6 +915,7 @@ function openModal(prodId, skuId) {
       <div class="impact-note">${IC.alert}
         <span>Las devoluciones te costaron <b>${fmt(metrics.impactoDev)}</b> este período y bajaron tu margen real ${fmtP(margenSinDev - margenConDev)} vs lo esperado.</span>
       </div>` : ''}
+      ${potentialHTML}
     </div>
 
     <div class="msec">
@@ -834,6 +933,13 @@ function openModal(prodId, skuId) {
     </div>`;
 
   document.getElementById('overlay').classList.add('show');
+
+  // Stagger-animate waterfall bars from 0 → target (each with delay)
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#modal2 .wf-bar[data-w]').forEach((bar, i) => {
+      setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 90 + i * 62);
+    });
+  });
 }
 
 function buildMiniChart(pts) {
@@ -932,12 +1038,33 @@ function toggleExpand(prodId, e) {
   const prod = PRODS.find(p => p.id === prodId);
   const isExp = EXPANDED.has(prodId);
 
-  // Toggle visibility de las filas hijas
+  // Toggle visibility de las filas hijas (con animación de entrada)
   if (prod.skus) {
-    prod.skus.forEach(s => {
+    prod.skus.forEach((s, idx) => {
       const row = document.getElementById(`skurow-${s.id}`);
-      if (row) row.classList.toggle('vis', isExp);
+      if (!row) return;
+      row.classList.toggle('vis', isExp);
+      if (isExp) {
+        // Force re-trigger animation on each expand
+        row.style.animation = 'none';
+        void row.offsetWidth; // reflow
+        row.style.animation = `skuIn .22s cubic-bezier(.23,1,.32,1) ${idx * 50}ms both`;
+      }
     });
+    // Trigger sparkbar fills in newly visible sku rows
+    if (isExp) {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        prod.skus.forEach((s, idx) => {
+          const row = document.getElementById(`skurow-${s.id}`);
+          if (!row) return;
+          const fill = row.querySelector('.spark-fill[data-w]');
+          if (fill) {
+            fill.style.width = '0'; void fill.offsetWidth; // reset so transition re-fires
+            setTimeout(() => { fill.style.width = fill.dataset.w + '%'; }, idx * 50 + 60);
+          }
+        });
+      }));
+    }
   }
   // Rotar el chevron del botón
   const btn = document.querySelector(`button.exp-btn[onclick*="${prodId}"]`);
