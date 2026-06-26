@@ -148,10 +148,12 @@ tbody tr.skurow.vis{display:table-row}
 tbody tr.skurow:active{background:#eef3fb}
 tbody tr.skurow:last-child{border-bottom:none}
 
-/* Celda nombre */
-.pname{font-weight:700;font-size:13px;color:var(--ink);display:flex;align-items:flex-start;flex-direction:column;gap:2px}
+/* Celda nombre (compacta — evita que el thead stiky la parta) */
+.prow-cell{display:flex;flex-direction:column;gap:3px}
+.prow-name{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pname-txt{font-weight:700;font-size:13px;color:var(--ink);line-height:1.3}
+.prow-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .pname-meta{font-weight:400;font-size:11px;color:var(--muted)}
-.ptags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;align-items:center}
 .badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted)}
 .badge.warn{color:var(--red);border-color:#f6c4c6;background:var(--red-soft)}
 .badge.combo{color:var(--blue);border-color:#bcd9ff;background:var(--blue-soft)}
@@ -215,11 +217,16 @@ button.sm{padding:8px 13px;font-size:12.5px}
 .modal2 h2{font-size:18px;font-weight:700;padding-right:44px}
 .modal2 .msub{color:var(--muted);font-size:12.5px;margin-top:3px}
 
-/* Stats rápidos en el modal */
-.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 0}
-.mstat{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;text-align:center}
-.mstat .ml{font-size:10.5px;color:var(--muted);margin-bottom:3px}
-.mstat .mv{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+/* Stats rápidos en el modal (diseño pro) */
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 0}
+.mstat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.mstat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--line)}
+.mstat.c-teal::before{background:var(--teal)}
+.mstat.c-amber::before{background:var(--amber)}
+.mstat.c-red::before{background:var(--red)}
+.mstat.c-blue::before{background:var(--blue)}
+.mstat .ml{font-size:10px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.mstat .mv{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:var(--ink)}
 .mstat .mv.teal{color:var(--teal-dk)}
 .mstat .mv.amber{color:var(--amber)}
 .mstat .mv.red{color:var(--red)}
@@ -324,6 +331,14 @@ tbody tr.neg-row{background:rgba(239,77,84,.03)!important}
 .mstat:nth-child(2){animation-delay:.13s}
 .mstat:nth-child(3){animation-delay:.20s}
 
+/* ── Separador fbar + selector de provincia ──────────────── */
+.fbar-sep{width:1px;height:22px;background:var(--line);flex:0 0 auto}
+.prov-sel{padding:5px 28px 5px 10px;font-size:12.5px;font-family:inherit;font-weight:600;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23828d9c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;border:1.5px solid var(--line);border-radius:var(--r-ctl);cursor:pointer;-webkit-appearance:none;appearance:none;transition:border-color .15s var(--ease-out),box-shadow .15s var(--ease-out)}
+.prov-sel:focus{outline:none;border-color:var(--blue);box-shadow:var(--focus)}
+@media(hover:hover) and (pointer:fine){.prov-sel:hover{border-color:#c7d0dc}}
+/* Prov chip de resultado en fbar-right */
+.prov-badge{display:inline-flex;align-items:center;gap:4px;padding:1px 7px;background:var(--blue-soft);color:var(--blue-dk);border-radius:5px;font-size:11px;font-weight:700}
+
 /* ── Potencial de ahorro chip ────────────────────────────── */
 .potential-note{background:linear-gradient(130deg,var(--teal-soft),#e2f7f1);border:1px solid rgba(43,184,154,.28);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--teal-dk);margin-top:10px;line-height:1.5;display:flex;align-items:flex-start;gap:9px}
 .potential-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px}
@@ -380,6 +395,17 @@ tbody tr.neg-row{background:rgba(239,77,84,.03)!important}
       <span>hasta</span>
       <input type="date" class="dinput" id="dateTo" onchange="applyCustom()">
     </div>
+    <div class="fbar-sep"></div>
+    <span class="fbar-label">Destino</span>
+    <select class="prov-sel" id="provSel" onchange="setProv(this.value)">
+      <option value="">Nacional</option>
+      <option value="caba">CABA</option>
+      <option value="bsas">Buenos Aires</option>
+      <option value="cordoba">Córdoba ★</option>
+      <option value="santafe">Santa Fe</option>
+      <option value="mendoza">Mendoza</option>
+      <option value="tucuman">Tucumán</option>
+    </select>
     <div class="fbar-right" id="fbarRight">Mostrando los últimos 30 días</div>
   </div>
 
@@ -480,9 +506,19 @@ const PRODS = [
 // ─────────────────────────────────────────────────────────
 let DAYS = 30;
 let EXPANDED = new Set();
-let SORT = { k:'margen', asc:true };  // peor margen primero por defecto
+let SORT = { k:'margen', asc:true };
 let OPEN_PROD = null;
 let OPEN_SKU  = null;
+let PROV = '';
+
+const PROV_DATA = {
+  'caba':    { label:'CABA',         envioExtra:500,  iibbExtra:0 },
+  'bsas':    { label:'Buenos Aires', envioExtra:900,  iibbExtra:0.5 },
+  'cordoba': { label:'Córdoba',      envioExtra:1800, iibbExtra:1.5 },
+  'santafe': { label:'Santa Fe',     envioExtra:1400, iibbExtra:0.5 },
+  'mendoza': { label:'Mendoza',      envioExtra:2800, iibbExtra:1.0 },
+  'tucuman': { label:'Tucumán',      envioExtra:3500, iibbExtra:1.5 },
+};
 
 // ─────────────────────────────────────────────────────────
 // ICONOS SVG
@@ -514,10 +550,13 @@ function calcUnit(precio, costo, p) {
   const comision  = precio * p.comisionPct / 100;
   const cuotas    = precio * (p.cuotasPct || 0) / 100;
   const mp        = precio * (p.mpFee || 0.8) / 100;
-  const impuestos = precio * ((p.iibb || 3.5) + 5) / 100; // IIBB + componente IVA
+  const impuestos = precio * ((p.iibb || 3.5) + 5) / 100; // IIBB local + IVA
   const envio     = p.envio || 0;
-  const gan       = precio - comision - cuotas - mp - impuestos - envio - costo;
-  return { comision, cuotas, mp, impuestos, envio, costo, gan, margen: gan / precio * 100 };
+  const pd        = PROV ? PROV_DATA[PROV] : null;
+  const envioEx   = pd ? pd.envioExtra : 0;  // flete interior país
+  const iibbEx    = pd ? precio * pd.iibbExtra / 100 : 0; // IIBB destino
+  const gan       = precio - comision - cuotas - mp - impuestos - envio - envioEx - iibbEx - costo;
+  return { comision, cuotas, mp, impuestos, envio, envioEx, iibbEx, costo, gan, margen: gan / precio * 100 };
 }
 
 function calcPeriod(vd, dd, precio, costo, p, days) {
@@ -702,9 +741,10 @@ function renderTable(days) {
     tr.onclick = () => openModal(p.id, null);
     tr.innerHTML = `
       <td style="min-width:220px">
-        <div class="pname">${p.nombre}<span class="pname-meta">${p.cat}${p.tipo==='combo'?' · '+p.comboNote:''}</span></div>
-        <div class="ptags">${hasBadge}${retWarn}</div>
-        ${expandBtn}
+        <div class="prow-cell">
+          <div class="prow-name"><span class="pname-txt">${p.nombre}</span>${hasBadge}${retWarn}</div>
+          <div class="prow-meta"><span class="pname-meta">${p.cat}${p.tipo==='combo'?' · Combo':''}</span>${expandBtn}</div>
+        </div>
       </td>
       <td class="num">${m.ventas.toLocaleString('es-AR')}</td>
       <td class="num">${m.devueltas.toLocaleString('es-AR')}</td>
@@ -816,6 +856,7 @@ function openModal(prodId, skuId) {
 
   // Waterfall: cada deducción como % del precio
   const pct = v => Math.max(0, Math.abs(v) / precio * 100);
+  const pd = PROV ? PROV_DATA[PROV] : null;
   const wfRows = [
     { label:'Precio de venta', val: precio, bar:'income', pct: 100, cls:'pos' },
     { label:`Comisión ML (${prod.comisionPct}%)`, val: -u.comision, bar:'cost', pct: pct(u.comision), cls:'neg' },
@@ -823,6 +864,10 @@ function openModal(prodId, skuId) {
     { label:'Comisión Mercado Pago (0.8%)', val: -u.mp, bar:'cost', pct: pct(u.mp), cls:'neg' },
     { label:`Impuestos IIBB+IVA (${((prod.iibb||3.5)+5).toFixed(1)}%)`, val: -u.impuestos, bar:'cost', pct: pct(u.impuestos), cls:'neg' },
     { label:`Envío${u.envio===0?' (gratis)':''}`, val: -u.envio, bar: u.envio>0?'cost':'zero', pct: pct(u.envio), cls: u.envio>0?'neg':'zero' },
+    ...(pd ? [
+      { label:`Logística a ${pd.label} (estimado)`, val: -u.envioEx, bar:'cost', pct: pct(u.envioEx), cls:'neg' },
+      ...(pd.iibbExtra > 0 ? [{ label:`IIBB ${pd.label} (${pd.iibbExtra}% adicional)`, val: -u.iibbEx, bar:'cost', pct: pct(u.iibbEx), cls:'neg' }] : []),
+    ] : []),
     { label:'Costo del producto', val: -u.costo, bar:'cost', pct: pct(u.costo), cls:'neg', sep:true },
     { label:'Ganancia por venta (sin dev.)', val: u.gan, bar: u.gan>0?(u.margen>15?'result-ok':u.margen>=8?'result-warn':'result-bad'):'result-bad', pct: pct(u.gan), cls: u.gan>=0?'pos':'neg', total:true },
   ];
@@ -877,22 +922,22 @@ function openModal(prodId, skuId) {
     ${comboNote}${varNote}
 
     <div class="mstats">
-      <div class="mstat">
+      <div class="mstat c-blue">
         <div class="ml">Unidades vendidas</div>
         <div class="mv">${metrics.ventas.toLocaleString('es-AR')}</div>
       </div>
-      <div class="mstat">
+      <div class="mstat ${retClass(metrics.tdev)==='hi'?'c-red':retClass(metrics.tdev)==='md'?'c-amber':''}">
         <div class="ml">Tasa de devolución</div>
         <div class="mv ${retClass(metrics.tdev)==='hi'?'red':retClass(metrics.tdev)==='md'?'amber':''}">${fmtP(metrics.tdev)}</div>
       </div>
-      <div class="mstat">
+      <div class="mstat c-${mCls(margenConDev)}">
         <div class="ml">Ganancia neta total</div>
         <div class="mv ${mCls(margenConDev)}">${fmt(metrics.ganNeta)}</div>
       </div>
     </div>
 
     <div class="msec">
-      <div class="msec-title">Cómo se forma el margen — por unidad vendida</div>
+      <div class="msec-title">Cómo se forma el margen — por unidad vendida${pd ? ` · destino <b style="color:var(--blue)">${pd.label}</b>` : ''}</div>
       ${buildWF(wfRows)}
       ${buildWF(wfDevRows)}
     </div>
@@ -992,15 +1037,31 @@ function closeModal() {
 // ─────────────────────────────────────────────────────────
 // CONTROLES
 // ─────────────────────────────────────────────────────────
+function updateFbarRight() {
+  const cd = document.getElementById('customDates');
+  const from = document.getElementById('dateFrom').value;
+  const to   = document.getElementById('dateTo').value;
+  let text = cd.classList.contains('show') && from && to
+    ? `${from} → ${to} (${DAYS} días)`
+    : `Últimos ${DAYS} días`;
+  if (PROV && PROV_DATA[PROV]) {
+    text += ` · <span class="prov-badge">📍 ${PROV_DATA[PROV].label}</span>`;
+  }
+  document.getElementById('fbarRight').innerHTML = text;
+}
+
+function setProv(p) {
+  PROV = p;
+  updateFbarRight();
+  refresh();
+}
+
 function setRange(r) {
   document.querySelectorAll('.rchip').forEach(c => c.classList.toggle('active', c.dataset.r == r));
   const cd = document.getElementById('customDates');
-  const fr = document.getElementById('fbarRight');
 
   if (r === 'custom') {
     cd.classList.add('show');
-    fr.textContent = 'Rango personalizado';
-    // Defaults: últimos 30 días
     if (!document.getElementById('dateFrom').value) {
       const t = new Date(), f = new Date(t); f.setDate(f.getDate()-30);
       document.getElementById('dateTo').value   = t.toISOString().slice(0,10);
@@ -1011,7 +1072,7 @@ function setRange(r) {
   }
   cd.classList.remove('show');
   DAYS = Number(r);
-  fr.textContent = `Mostrando los últimos ${DAYS} días`;
+  updateFbarRight();
   refresh();
 }
 
@@ -1019,9 +1080,8 @@ function applyCustom() {
   const from = document.getElementById('dateFrom').value;
   const to   = document.getElementById('dateTo').value;
   if (!from || !to) return;
-  const d = Math.max(1, Math.round((new Date(to) - new Date(from)) / 86400000));
-  DAYS = d;
-  document.getElementById('fbarRight').textContent = `${from} → ${to} (${d} días)`;
+  DAYS = Math.max(1, Math.round((new Date(to) - new Date(from)) / 86400000));
+  updateFbarRight();
   refresh();
 }
 
