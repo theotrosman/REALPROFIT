@@ -170,8 +170,8 @@ tbody tr.skurow:last-child{border-bottom:none}
 .exp-btn:focus-visible{outline:none}
 
 /* Celda SKU hijo */
-.sku-cell{padding-left:28px;display:flex;align-items:center;gap:8px}
-.sku-dash{width:12px;height:1.5px;background:#cdd5e0;flex:0 0 auto}
+.sku-cell{padding-left:28px;display:flex;align-items:flex-start;gap:8px}
+.sku-dash{width:12px;height:1.5px;background:#cdd5e0;flex:0 0 auto;margin-top:8px}
 .sku-name{font-size:12.5px;font-weight:600;color:var(--ink2)}
 
 /* Números */
@@ -348,6 +348,48 @@ tbody tr.neg-row{background:rgba(239,77,84,.03)!important}
 /* ── Potencial de ahorro chip ────────────────────────────── */
 .potential-note{background:linear-gradient(130deg,var(--teal-soft),#e2f7f1);border:1px solid rgba(43,184,154,.28);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--teal-dk);margin-top:10px;line-height:1.5;display:flex;align-items:flex-start;gap:9px}
 .potential-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px}
+
+/* ── Punto de equilibrio (meta en tabla) ─────────────────── */
+.eq-meta{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.eq-meta.eq-ok{color:var(--muted)}
+.eq-meta.eq-warn{color:var(--amber)}
+.eq-meta.eq-bad{color:var(--red)}
+/* Badge "reindexar" */
+.badge.idx{color:#9a6b00;border-color:#f0d48a;background:var(--amber-soft)}
+
+/* ── Break-even callout (modal) ──────────────────────────── */
+.be-note{display:flex;flex-direction:column;gap:6px;border-radius:var(--r);padding:12px 14px;margin-top:14px;border:1px solid var(--line);background:var(--bg)}
+.be-note.teal{background:var(--teal-soft);border-color:rgba(43,184,154,.28)}
+.be-note.amber{background:var(--amber-soft);border-color:#f0d48a}
+.be-note.red{background:var(--red-soft);border-color:#f6c4c6}
+.be-main{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.be-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.be-v{font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:var(--ink)}
+.be-note.teal .be-v{color:var(--teal-dk)}
+.be-note.amber .be-v{color:#9a6b00}
+.be-note.red .be-v{color:var(--red)}
+.be-desc{font-size:11.5px;line-height:1.45;color:var(--ink2)}
+
+/* ── Indexación inflacionaria (modal) ────────────────────── */
+.idx-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:10px}
+.idx-box{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:13px 14px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.idx-box.hl{background:var(--blue-soft);border-color:#bcd9ff}
+.idx-box .cl{font-size:10.5px;color:var(--muted);margin-bottom:4px}
+.idx-box .cv{font-size:19px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.idx-box .cv.blue{color:var(--blue-dk)}
+.idx-box .ch{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.3}
+.idx-arrow{display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);font-weight:700}
+.idx-note{background:var(--blue-soft);border-radius:var(--r);padding:10px 13px;font-size:12px;color:var(--blue-dk);margin-top:10px;line-height:1.5;display:flex;align-items:flex-start;gap:9px}
+.idx-note svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px;color:var(--blue)}
+.idx-note.idx-ok{background:var(--teal-soft);color:var(--teal-dk)}
+.idx-note.idx-ok svg{color:var(--teal)}
+.idx-apply{margin-top:10px}
+
+/* Alert-bar variante indexación */
+.alert-bar.idx-alert{background:var(--amber-soft);border-color:#f0d48a;color:#9a6b00}
+.alert-bar.idx-alert svg{color:#c98a00;animation:none}
+
+@media(max-width:560px){.idx-grid{grid-template-columns:1fr}.idx-arrow{transform:rotate(90deg)}}
 </style>
 </head>
 <body>
@@ -462,13 +504,14 @@ tbody tr.neg-row{background:rgba(239,77,84,.03)!important}
 const PRODS = [
   {
     id:'AUR-X3', nombre:'Auriculares BT X3', cat:'Electrónica', tipo:'simple',
-    precio:54900, costo:18000,
+    precio:54900, costo:18000, precioDesde:'2026-05-22',
     comisionPct:14.5, envio:0, cuotasPct:8.5, mpFee:0.8, iibb:3.5,
     vd:1.8,   // ventas/día promedio
     dd:0.076, // devoluciones/día → ~4.2 % de tasa
   },
   {
     id:'ZAP-RUN', nombre:'Zapatillas Running Z4', cat:'Indumentaria', tipo:'variante',
+    precioDesde:'2026-01-12',
     comisionPct:15.5, envio:0, cuotasPct:14, mpFee:0.8, iibb:4.0,
     skus:[
       {id:'ZAP-38', label:'Talle 38', precio:89900, costo:38000, vd:0.45, dd:0.028},
@@ -480,25 +523,26 @@ const PRODS = [
   },
   {
     id:'SER-PRO', nombre:'Silla Ergonómica Pro', cat:'Hogar y Oficina', tipo:'simple',
-    precio:185000, costo:110000,
+    precio:185000, costo:110000, precioDesde:'2026-04-10',
     comisionPct:13.5, envio:0, cuotasPct:14, mpFee:0.8, iibb:3.0,
     vd:0.60,  dd:0.096, // 16 % tasa de devolución → producto problema
   },
   {
     id:'CAR-USB', nombre:'Cargador USB-C 65W', cat:'Electrónica', tipo:'simple',
-    precio:19900, costo:11500,
+    precio:19900, costo:11500, precioDesde:'2026-06-10',
     comisionPct:14.0, envio:2600, cuotasPct:0, mpFee:0.8, iibb:3.5,
     vd:2.6,   dd:0.085, // 3.3 % tasa
   },
   {
     id:'KIT-AUR', nombre:'Kit Auriculares + Funda', cat:'Electrónica', tipo:'combo',
-    precio:62900, costo:21500,  // auriculares $18.000 + funda $3.500
+    precio:62900, costo:21500, precioDesde:'2026-03-05',  // auriculares $18.000 + funda $3.500
     comisionPct:14.5, envio:0, cuotasPct:8.5, mpFee:0.8, iibb:3.5,
     vd:0.9, dd:0.024,
     comboNote:'Auriculares BT X3 ($18.000) + Funda Protectora ($3.500)',
   },
   {
     id:'MCH-30L', nombre:'Mochila Urbana 30L', cat:'Accesorios', tipo:'variante',
+    precioDesde:'2026-02-20',
     comisionPct:14.0, envio:2900, cuotasPct:4.5, mpFee:0.8, iibb:3.5,
     skus:[
       {id:'MCH-NEG', label:'Negro', precio:41200, costo:23500, vd:0.9,  dd:0.040},
@@ -614,6 +658,34 @@ function getKPIs(days) {
 }
 
 // ─────────────────────────────────────────────────────────
+// PUNTO DE EQUILIBRIO E INDEXACIÓN INFLACIONARIA
+// ─────────────────────────────────────────────────────────
+const HOY = new Date('2026-06-27T00:00:00');
+const IPC_MENSUAL = 0.038; // inflación mensual estimada (3.8%)
+
+// Precio mínimo por debajo del cual cada venta da pérdida
+function breakEven(costo, p) {
+  const pd = PROV ? PROV_DATA[PROV] : null;
+  const pctSum = (p.comisionPct + (p.cuotasPct||0) + (p.mpFee||0.8) + ((p.iibb||3.5)+5) + (pd ? pd.iibbExtra : 0)) / 100;
+  const fixedSum = (p.envio||0) + (pd ? pd.envioExtra : 0) + costo;
+  return fixedSum / (1 - pctSum);
+}
+function eqMeta(precio, costo, p) {
+  const be = breakEven(costo, p);
+  const cushion = (precio / be - 1) * 100; // colchón sobre el equilibrio
+  const cls = cushion <= 0 ? 'eq-bad' : cushion < 12 ? 'eq-warn' : 'eq-ok';
+  return `<span class="eq-meta ${cls}" title="Punto de equilibrio: por debajo de ${fmt(be)} cada venta da pérdida">Equilibrio ${fmt(be)} · ${cushion>=0?'+':''}${cushion.toFixed(0)}%</span>`;
+}
+
+// Indexación: cuánto se rezagó el precio frente a la inflación
+function mesesDesde(iso) { return Math.max(0, (HOY - new Date(iso+'T00:00:00')) / (1000*60*60*24*30.44)); }
+function inflAcumPct(iso) { return (Math.pow(1 + IPC_MENSUAL, mesesDesde(iso)) - 1) * 100; }
+function precioSugerido(precio, iso) { return Math.round(precio * (1 + inflAcumPct(iso)/100) / 100) * 100; }
+function fmtFecha(iso) { return new Date(iso+'T00:00:00').toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtMeses(m) { if (m < 1) { const s = Math.max(1, Math.round(m*4.33)); return s <= 1 ? 'hace ~1 semana' : `hace ~${s} semanas`; } const r = Math.round(m); return r <= 1 ? 'hace ~1 mes' : `hace ~${r} meses`; }
+function idxBadge(iso) { if (!iso) return ''; const acum = inflAcumPct(iso); if (acum < 5) return ''; return `<span class="badge idx" title="El precio quedó ${acum.toFixed(0)}% rezagado vs la inflación desde su última actualización (${fmtFecha(iso)})">↑ reindexar +${acum.toFixed(0)}%</span>`; }
+
+// ─────────────────────────────────────────────────────────
 // DATOS SEMANALES (para el gráfico del modal)
 // ─────────────────────────────────────────────────────────
 function weeklyMargins(prod, skuObj, days) {
@@ -727,6 +799,13 @@ function renderTable(days) {
     ab.innerHTML += `<div class="alert-bar">${IC.alert}<span><b>${p.nombre}</b> tiene una tasa de devolución de ${fmtP(m.tdev)}. Perdiste <b>${fmt(m.impactoDev)}</b> este período por devoluciones. Hacé clic en el producto para ver el análisis completo.</span></div>`;
   });
 
+  // Alerta de productos con precio rezagado vs inflación
+  const stale = PRODS.filter(p => p.precioDesde && inflAcumPct(p.precioDesde) >= 10);
+  if (stale.length) {
+    const maxLag = Math.max(...stale.map(p => inflAcumPct(p.precioDesde)));
+    ab.innerHTML += `<div class="alert-bar idx-alert">${IC.trend}<span><b>${stale.length} producto${stale.length>1?'s':''}</b> con el precio rezagado respecto de la inflación (hasta ${maxLag.toFixed(0)}%). Reindexarlos protege tu margen — abrí cada uno para ver el precio sugerido.</span></div>`;
+  }
+
   // Filas
   const rows = prodSort(PRODS.map(p => ({ prod: p, m: getProdMetrics(p, days) })));
   rows.forEach(({ prod: p, m }, rowIdx) => {
@@ -748,8 +827,8 @@ function renderTable(days) {
     tr.innerHTML = `
       <td style="min-width:220px">
         <div class="prow-cell">
-          <div class="prow-name"><span class="pname-txt">${p.nombre}</span>${hasBadge}${retWarn}</div>
-          <div class="prow-meta"><span class="pname-meta">${p.cat}${p.tipo==='combo'?' · Combo':''}</span>${expandBtn}</div>
+          <div class="prow-name"><span class="pname-txt">${p.nombre}</span>${hasBadge}${retWarn}${idxBadge(p.precioDesde)}</div>
+          <div class="prow-meta"><span class="pname-meta">${p.cat}${p.tipo==='combo'?' · Combo':''}</span>${!isVar ? eqMeta(p.precio, p.costo, p) : ''}${expandBtn}</div>
         </div>
       </td>
       <td class="num">${m.ventas.toLocaleString('es-AR')}</td>
@@ -786,7 +865,10 @@ function renderTable(days) {
           <td style="min-width:220px">
             <div class="sku-cell">
               <span class="sku-dash"></span>
-              <span class="sku-name">${s.label}</span>
+              <div class="prow-cell">
+                <div class="prow-name"><span class="sku-name">${s.label}</span>${idxBadge(p.precioDesde)}</div>
+                <div class="prow-meta">${eqMeta(s.precio, s.costo, p)}</div>
+              </div>
             </div>
           </td>
           <td class="num">${sm.ventas.toLocaleString('es-AR')}</td>
@@ -921,6 +1003,57 @@ function openModal(prodId, skuId) {
   const varNote = !skuId && prod.skus
     ? `<div style="background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:9px 13px;font-size:12px;color:var(--muted);margin:12px 0">Los valores del waterfall usan el precio/costo promedio ponderado por volumen de ventas. Para ver el desglose de un talle específico, cerrá este panel y hacé clic en la fila del SKU.</div>` : '';
 
+  // ── Punto de equilibrio ──
+  const be = breakEven(costo, prod);
+  const cushion = (precio / be - 1) * 100;
+  const beCls = cushion <= 0 ? 'red' : cushion < 12 ? 'amber' : 'teal';
+  const beDesc = cushion <= 0
+    ? `El precio actual está <b>por debajo</b> del equilibrio: cada venta pierde dinero incluso antes de las devoluciones. Necesitás vender por encima de ${fmt(be)}.`
+    : cushion < 12
+      ? `Te queda apenas <b>${cushion.toFixed(0)}%</b> de colchón sobre el equilibrio. Una suba de comisión, envío o costo del proveedor te deja en pérdida.`
+      : `Tenés <b>${cushion.toFixed(0)}%</b> de colchón sobre el equilibrio — margen sano para absorber subas de costos.`;
+  const beHTML = `
+    <div class="be-note ${beCls}">
+      <div class="be-main">
+        <span class="be-l">Punto de equilibrio${pd ? ` · ${pd.label}` : ''}</span>
+        <span class="be-v">${fmt(be)}</span>
+      </div>
+      <div class="be-desc">${beDesc} Por debajo de <b>${fmt(be)}</b> cada unidad da pérdida.</div>
+    </div>`;
+
+  // ── Indexación inflacionaria ──
+  const pDesde = prod.precioDesde;
+  const acum   = pDesde ? inflAcumPct(pDesde) : 0;
+  const meses  = pDesde ? mesesDesde(pDesde) : 0;
+  const sug    = pDesde ? precioSugerido(precio, pDesde) : precio;
+  const uSug   = calcUnit(sug, costo, prod);
+  const ganExtra = uSug.gan - u.gan;
+  const alDia  = acum < 3;
+  let idxHTML = '';
+  if (pDesde) {
+    idxHTML = `
+    <div class="msec">
+      <div class="msec-title">Indexación por inflación${alDia ? '' : ` · precio sin tocar ${fmtMeses(meses)}`}</div>
+      <div class="idx-grid">
+        <div class="idx-box">
+          <div class="cl">Precio actual</div>
+          <div class="cv">${fmt(precio)}</div>
+          <div class="ch">desde ${fmtFecha(pDesde)}</div>
+        </div>
+        <div class="idx-arrow">→</div>
+        <div class="idx-box hl">
+          <div class="cl">Precio indexado sugerido</div>
+          <div class="cv blue">${fmt(sug)}</div>
+          <div class="ch">+${acum.toFixed(0)}% de inflación acumulada</div>
+        </div>
+      </div>
+      ${alDia
+        ? `<div class="idx-note idx-ok">${IC.info}<span>El precio está al día con la inflación (rezago menor al 3%). No hace falta reindexar todavía.</span></div>`
+        : `<div class="idx-note">${IC.trend}<span>Reindexar a <b>${fmt(sug)}</b> recupera el poder adquisitivo perdido y suma <b>${fmt(ganExtra)}</b> de ganancia por unidad, manteniendo tu margen real intacto.</span></div>
+           <button class="teal sm idx-apply" onclick="toast2('Precio indexado sugerido: ${fmt(sug)}. Disponible cuando conectes tu cuenta real de ML.'); closeModal()">Aplicar precio indexado →</button>`}
+    </div>`;
+  }
+
   document.getElementById('modal2').innerHTML = `
     <button class="mclose" onclick="closeModal()" aria-label="Cerrar">${IC.close}</button>
     <h2>${titulo}</h2>
@@ -946,6 +1079,7 @@ function openModal(prodId, skuId) {
       <div class="msec-title">Cómo se forma el margen — por unidad vendida${pd ? ` · destino <b style="color:var(--blue)">${pd.label}</b>` : ''}</div>
       ${buildWF(wfRows)}
       ${buildWF(wfDevRows)}
+      ${beHTML}
     </div>
 
     <div class="msec">
@@ -968,6 +1102,8 @@ function openModal(prodId, skuId) {
       </div>` : ''}
       ${potentialHTML}
     </div>
+
+    ${idxHTML}
 
     <div class="msec">
       <div class="msec-title">Evolución del margen en el período</div>
