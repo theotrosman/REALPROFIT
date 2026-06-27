@@ -123,8 +123,11 @@ svg{display:block}
 .sec-h small{color:var(--muted);font-weight:400;font-size:12px}
 .alert-bar{background:var(--red-soft);border:1px solid #f6c4c6;border-radius:var(--r);padding:11px 14px;display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:#c0353b;margin-bottom:12px;line-height:1.45}
 .alert-bar svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px}
-.tablecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
-.tscroll{overflow-x:auto}
+/* overflow:clip recorta las esquinas redondeadas SIN crear un scroll container.
+   Con overflow:hidden/auto el thead sticky se ancla a esta caja (que no scrollea
+   en vertical) en vez de al viewport, por eso el header se metía bajo el topbar. */
+.tablecard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:clip;box-shadow:var(--shadow)}
+.tscroll{overflow-x:clip}
 
 /* ── Tabla ──────────────────────────────────────────────── */
 table{width:100%;border-collapse:collapse;font-size:12.5px}
@@ -299,8 +302,10 @@ button.sm{padding:8px 13px;font-size:12.5px}
 .kpi2-delta.dn{color:var(--red);background:var(--red-soft)}
 
 /* ── Row entrance animations ─────────────────────────────── */
-@keyframes rowIn{from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:translateX(0)}}
-@keyframes skuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+/* Solo opacity: animar transform en <tr> los promueve a una capa GPU que
+   tapa el thead sticky. Con fade puro el header siempre queda por encima. */
+@keyframes rowIn{from{opacity:0}to{opacity:1}}
+@keyframes skuIn{from{opacity:0}to{opacity:1}}
 
 /* ── Negative row red accent (layout-safe inset shadow) ──── */
 tbody tr.prow td:first-child,tbody tr.skurow td:first-child{
